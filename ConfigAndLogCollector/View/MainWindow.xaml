@@ -8,6 +8,7 @@
         mc:Ignorable="d"
         Title="ConfigAndLogCollector" Height="500" Width="650">
     
+    
     <Window.Resources>
         <Style x:Key="TextBlockStyle1" TargetType="TextBlock">
             <Setter Property="Margin" Value="10 5 0 0"/>
@@ -50,7 +51,7 @@
 
         
         <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
-        <!--available tools-->
+        <!-- available tools -->
         <TextBlock Grid.Row="0" Grid.Column="0" 
                    Style="{StaticResource TextBlockStyle1}" 
                    Text="List of available tools on the network" TextWrapping="Wrap"
@@ -74,7 +75,7 @@
 
 
         <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
-        <!--Extension selector-->
+        <!-- Extension selector -->
         <TextBlock Grid.Row="2" Grid.Column="0" 
                    Style="{StaticResource TextBlockStyle1}" 
                    Text="Extensions" TextWrapping="Wrap"

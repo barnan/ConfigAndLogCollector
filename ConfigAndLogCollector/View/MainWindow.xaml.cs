@@ -23,6 +23,9 @@ namespace ConfigAndLogCollector
         public MainWindow()
         {
             InitializeComponent();
+
+            ViewModel.ConfigAndLogCollectorViewModel vm = new ViewModel.ConfigAndLogCollectorViewModel();
+            DataContext = vm;
         }
     }
 }
