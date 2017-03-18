@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -63,7 +64,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ArchiveOptions.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Model\Collector.cs" />
+    <Compile Include="Model\NetworkCommunicator.cs" />
     <Compile Include="ViewModel\ConfigAndLogCollectorViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="View\Converter\IsCheckedConverter.cs" />
@@ -99,8 +103,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Model\" />
+    <ProjectReference Include="..\Functionality\Functionality.csproj">
+      <Project>{12156b8f-6057-4466-9bda-d5529617b9d4}</Project>
+      <Name>Functionality</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

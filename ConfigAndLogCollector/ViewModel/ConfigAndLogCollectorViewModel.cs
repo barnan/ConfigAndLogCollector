@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ConfigAndLogCollector.Commands;
+using ConfigAndLogCollector.Model;
+
+
 
 namespace ConfigAndLogCollector.ViewModel
 {
@@ -11,12 +15,22 @@ namespace ConfigAndLogCollector.ViewModel
     {
 
         public RelayCommand GetDataCommand { get; set; }
+        private Collector _collector;
+        //public RepresentedLists _representedLists;
 
-        private int myVar = 10;
-        public int MyProperty
+
+
+        public ConfigAndLogCollectorViewModel()
         {
-            get { return myVar; }
-            set { myVar = value; }
+            string domain = ConfigurationManager.AppSettings["domain"];
+            string archiveOptionConfigFileName = ConfigurationManager.AppSettings["ArchiveOptionFile"];
+
+            
+            ArchiveOptions archOptions = ArchiveOptions.ReadParameters(archiveOptionConfigFileName);
+
+            _collector = new Collector(domain);
+
+            //GetDataCommand = new RelayCommand();
         }
 
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Functionality
+namespace ConfigAndLogCollector.Model
 {
     public class NetworkCommunicator
     {
@@ -24,20 +24,16 @@ namespace Functionality
             _computerNames = new List<string>();
         }
         
-
-
-        public void Init()
-        {
-            
-        }
+               
 
         /// <summary>
         /// 
         /// </summary>
-        public void GetComputersOnNetwork()
+        public void GetComputersListOnNetwork()
         {
             
         }
+
 
 
 
