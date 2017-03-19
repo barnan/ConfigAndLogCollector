@@ -68,6 +68,8 @@
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Model\Collector.cs" />
     <Compile Include="Model\NetworkCommunicator.cs" />
+    <Compile Include="Shares.cs" />
+    <Compile Include="testShares.cs" />
     <Compile Include="ViewModel\ConfigAndLogCollectorViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="View\Converter\IsCheckedConverter.cs" />

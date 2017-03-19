@@ -4,11 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
+// https://www.codeproject.com/Articles/2939/Network-Shares-and-UNC-paths 
+// http://stackoverflow.com/questions/14340548/get-all-folders-from-network
+
+
 namespace ConfigAndLogCollector.Model
 {
     public class Collector
     {
-        string _domain;
+        //string _domain;
         NetworkCommunicator _netComm;
 
         List<string> PcList { get; set; }
@@ -17,17 +22,20 @@ namespace ConfigAndLogCollector.Model
         List<string> FileList { get; set; }
 
 
-        public Collector(string domain)
+        public Collector(string archiveOptionConfigFileName)
         {
-            _domain = domain;
+            ArchiveOptions archOptions = ArchiveOptions.ReadParameters(archiveOptionConfigFileName);
 
+
+
+            //_domain = domain;
             Init();
 
         }
 
         void Init()
         {
-            _netComm = new NetworkCommunicator(_domain);
+            //_netComm = new NetworkCommunicator(_domain);
 
         }
 

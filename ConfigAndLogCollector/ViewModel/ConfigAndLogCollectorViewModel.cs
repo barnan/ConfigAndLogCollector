@@ -22,13 +22,10 @@ namespace ConfigAndLogCollector.ViewModel
 
         public ConfigAndLogCollectorViewModel()
         {
-            string domain = ConfigurationManager.AppSettings["domain"];
+            //string domain = ConfigurationManager.AppSettings["domain"];
             string archiveOptionConfigFileName = ConfigurationManager.AppSettings["ArchiveOptionFile"];
 
-            
-            ArchiveOptions archOptions = ArchiveOptions.ReadParameters(archiveOptionConfigFileName);
-
-            _collector = new Collector(domain);
+            _collector = new Collector(archiveOptionConfigFileName);
 
             //GetDataCommand = new RelayCommand();
         }

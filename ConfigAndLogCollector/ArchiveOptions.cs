@@ -12,6 +12,7 @@ namespace ConfigAndLogCollector
     [Serializable]
     public class ArchiveOptions
     {
+        #region properties
         private List<ArchOption> _optionList;
         public List<ArchOption> OptionList
         {
@@ -19,7 +20,7 @@ namespace ConfigAndLogCollector
             set { _optionList = value; }
         }
 
-        private string _networkPath;
+        private string _networkPath; 
         public string NetworkPath
         {
             get { return _networkPath; }
@@ -32,18 +33,13 @@ namespace ConfigAndLogCollector
             get { return _toolNames; }
             set { _toolNames = value; }
         }
+        #endregion
 
 
-        //string PcNameFilterOnNetwork { get; set; }
-
-
+        #region constructors
         public ArchiveOptions()
         {
-            this.NetworkPath = "WinNT://Workgroup";
-            this.ToolNames = new string[] { "SHP" };
-            this.OptionList = new List<ArchOption> { new ArchOption() };
         }
-
 
         public ArchiveOptions(string pa, string[] toolnames, List<ArchOption> opl = null) //, string pcnamefilter)
         {
@@ -55,11 +51,10 @@ namespace ConfigAndLogCollector
             else
                 this.OptionList = new List<ArchOption>();
 
-            //this.PCNameFilterOnNetwork = pcnamefilter;
         }
+        #endregion
 
-
-
+        #region xml serialization
         public static void WriteParameters(string filename, ArchiveOptions appconf)
         {
             if (appconf != null)
@@ -68,8 +63,7 @@ namespace ConfigAndLogCollector
             }
 
         }
-
-
+        
 
         private static void SerializeParameters(string filename, ArchiveOptions appconf)
         {
@@ -110,7 +104,7 @@ namespace ConfigAndLogCollector
 
         private static ArchiveOptions DeserializeParameters(string filename)
         {
-            ArchiveOptions appconf = new ArchiveOptions();
+            ArchiveOptions appconf; // = new ArchiveOptions();
             try
             {
                 TextReader tr = new StreamReader(filename);
@@ -127,20 +121,20 @@ namespace ConfigAndLogCollector
             }
             return appconf;
         }
-
+        #endregion
     }
     
 
     public class ArchOption
     {
-        //members:
+        #region property
         private string _name;
         public string Name
         {
             get { return _name; }
             set { _name = value; }
         }
-
+        
 
         private List<ArchivePath> _fileDirList;
         public List<ArchivePath> FileDirList
@@ -148,15 +142,11 @@ namespace ConfigAndLogCollector
             get { return _fileDirList; }
             set { _fileDirList = value; }
         }
+        #endregion
 
-
-        /// <summary>
-        /// constructors
-        /// </summary>
+        #region constructor
         public ArchOption()
         {
-            this.Name = "All files";
-            this.FileDirList = new List<ArchivePath> { new ArchivePath()};
         }
 
         public ArchOption(string name)
@@ -170,6 +160,8 @@ namespace ConfigAndLogCollector
             this.Name = name;
             this.FileDirList = list;
         }
+        #endregion
+
 
         /// <summary>
         /// add element:
@@ -180,98 +172,56 @@ namespace ConfigAndLogCollector
             FileDirList.Add(newextension);
         }
 
-
-        ///// <summary>
-        ///// XMl serialization
-        ///// </summary>
-        ///// <param name="fileName"></param>
-        ///// <param name="opt"></param>
-        //public static void SaveParameters(string fileName, ArchOption opt)
-        //{
-        //    //if (File.Exists(fileName))
-        //    //    File.Delete(fileName);
-
-        //    using (TextWriter textWriter = new StreamWriter(fileName))
-        //    {
-        //        XmlSerializer xmlSerializer = XmlSerializer.FromTypes(new[] { typeof(ArchOption) })[0];
-
-        //        xmlSerializer.Serialize(textWriter, opt);
-        //    }
-        //}
-
-        //public static ArchOption ReadParameters(string fileName)
-        //{
-        //    ArchOption opt = new ArchOption();
-        //    try
-        //    {
-        //        TextReader reader = new StreamReader(fileName);
-        //        XmlSerializer serializer = XmlSerializer.FromTypes(new[] { typeof(ArchOption) })[0];
-        //        opt = (ArchOption)serializer.Deserialize(reader);
-
-        //        reader.Close();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw new Exception("Specification xml (" + System.IO.Path.GetFileName(fileName) + ") is not readable. " + ex.Message);
-        //    }
-        //    return opt;
-        //}
     }
 
 
     public class ArchivePath : BasePath
     {
+        #region property:
         private int _numOfDays;
         public int NumOfDays
         {
             get { return _numOfDays; }
             set { _numOfDays = value; }
         }
+        #endregion
 
-
-        /// <summary>
-        /// constructor:
-        /// </summary>
-        /// <param name="path"></param>
-        /// <param name="recursive"></param>
+        #region constructor
         public ArchivePath()
             : base()
         {
-            this.NumOfDays = -1;
         }
-
-        
+                
         public ArchivePath(string path, bool recursivedir, int day = -1)
             : base(path, recursivedir)
         {
             this.NumOfDays = day;
         }
-
+        #endregion
     }
 
 
     public class BasePath
     {
+        #region properties
         private string _path;
         public string Path
         {
             get { return _path; }
             set { _path = value; }
         }
-
-
+        
         private bool _recursiveDir;
         public bool RecursiveDir
         {
             get { return _recursiveDir; }
             set { _recursiveDir = value; }
         }
+        #endregion
 
-
+        #region constructors
         public BasePath()
         {
-            this.Path = "*.*";
-            this.RecursiveDir = false;
         }
 
         public BasePath(string path, bool recursive)
@@ -279,9 +229,7 @@ namespace ConfigAndLogCollector
             this.Path = path;
             this.RecursiveDir = recursive;
         }
+        #endregion
     }
-
-
-
-
+    
 }
