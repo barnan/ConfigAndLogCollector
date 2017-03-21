@@ -35,7 +35,6 @@ namespace ConfigAndLogCollector
         }
         #endregion
 
-
         #region constructors
         public ArchiveOptions()
         {
@@ -91,6 +90,10 @@ namespace ConfigAndLogCollector
                 configFilePath = exeFolder + @"\Configs\ArchiveOptions.xml";
 
                 ArchiveOptions aop = new ArchiveOptions();
+                aop.ToolNames = new string[] {"TTR" };
+                aop.NetworkPath = " ";
+                aop.OptionList = new List<ArchOption> {new ArchOption() {Name = "Log", FileDirList = new List<BasePath> {new LogPath() { Path = "*.logs", RecursiveDir = false, NumOfDays = 2},
+                                                                                                                        new BasePath() { Path = "*.xml", RecursiveDir = true} } } };
 
                 Directory.CreateDirectory(Path.GetDirectoryName(configFilePath));
                 WriteParameters(configFilePath, aop);
@@ -136,8 +139,8 @@ namespace ConfigAndLogCollector
         }
         
 
-        private List<ArchivePath> _fileDirList;
-        public List<ArchivePath> FileDirList
+        private List<BasePath> _fileDirList;
+        public List<BasePath> FileDirList
         {
             get { return _fileDirList; }
             set { _fileDirList = value; }
@@ -152,22 +155,21 @@ namespace ConfigAndLogCollector
         public ArchOption(string name)
         {
             this.Name = name;
-            this.FileDirList = new List<ArchivePath>();
+            this.FileDirList = new List<BasePath>();
         }
 
-        public ArchOption(string name, List<ArchivePath> list)
+        public ArchOption(string name, List<BasePath> list)
         {
             this.Name = name;
             this.FileDirList = list;
         }
         #endregion
 
-
         /// <summary>
         /// add element:
         /// </summary>
         /// <param name="newextension"></param>
-        public void AddFileExtension(ArchivePath newextension)
+        public void AddFileExtension(LogPath newextension)
         {
             FileDirList.Add(newextension);
         }
@@ -175,7 +177,7 @@ namespace ConfigAndLogCollector
     }
 
 
-    public class ArchivePath : BasePath
+    public class LogPath : BasePath
     {
         #region property:
         private int _numOfDays;
@@ -187,12 +189,11 @@ namespace ConfigAndLogCollector
         #endregion
 
         #region constructor
-        public ArchivePath()
+        public LogPath()
             : base()
         {
         }
-                
-        public ArchivePath(string path, bool recursivedir, int day = -1)
+        public LogPath(string path, bool recursivedir, int day = -1)
             : base(path, recursivedir)
         {
             this.NumOfDays = day;
@@ -230,6 +231,7 @@ namespace ConfigAndLogCollector
             this.RecursiveDir = recursive;
         }
         #endregion
+
     }
     
 }

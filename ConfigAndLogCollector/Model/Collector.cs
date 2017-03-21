@@ -16,33 +16,21 @@ namespace ConfigAndLogCollector.Model
         //string _domain;
         NetworkCommunicator _netComm;
 
-        List<string> PcList { get; set; }
-        List<string> OptionList { get; set; }
+        List<List<SharedFile>> SharedFileList { get; set; }
+        private ArchiveOptions ArchOptions { get; set; }
+
         List<string> ExtensionList { get; set; }
-        List<string> FileList { get; set; }
 
 
         public Collector(string archiveOptionConfigFileName)
         {
-            ArchiveOptions archOptions = ArchiveOptions.ReadParameters(archiveOptionConfigFileName);
+            ArchOptions = ArchiveOptions.ReadParameters(archiveOptionConfigFileName);
+            _netComm = new NetworkCommunicator();
 
+            SharedFileList = _netComm.GetFileListOfShares();
 
-
-            //_domain = domain;
-            Init();
 
         }
-
-        void Init()
-        {
-            //_netComm = new NetworkCommunicator(_domain);
-
-        }
-
-
-
-
-
 
     }
 }

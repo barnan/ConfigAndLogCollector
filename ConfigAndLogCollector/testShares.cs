@@ -69,8 +69,7 @@ class SharesTest
 			{
 				foreach(Share si in shi) 
 				{
-					Console.WriteLine("{0}: {1} [{2}]", 
-						si.ShareType, si, si.Path);
+					Console.WriteLine("{0}: {1} [{2}]", si.ShareType, si, si.Path);
 
 					// If this is a file-system share, try to
 					// list the first five subfolders.

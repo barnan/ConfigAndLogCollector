@@ -22,7 +22,6 @@ namespace ConfigAndLogCollector.ViewModel
 
         public ConfigAndLogCollectorViewModel()
         {
-            //string domain = ConfigurationManager.AppSettings["domain"];
             string archiveOptionConfigFileName = ConfigurationManager.AppSettings["ArchiveOptionFile"];
 
             _collector = new Collector(archiveOptionConfigFileName);
