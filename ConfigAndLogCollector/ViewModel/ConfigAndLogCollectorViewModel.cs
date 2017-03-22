@@ -15,7 +15,7 @@ namespace ConfigAndLogCollector.ViewModel
     {
 
         public RelayCommand GetDataCommand { get; set; }
-        private Collector _collector;
+        private Collector Collector { get; set; }
         //public RepresentedLists _representedLists;
 
 
@@ -24,9 +24,7 @@ namespace ConfigAndLogCollector.ViewModel
         {
             string archiveOptionConfigFileName = ConfigurationManager.AppSettings["ArchiveOptionFile"];
 
-            _collector = new Collector(archiveOptionConfigFileName);
-
-            //GetDataCommand = new RelayCommand();
+            Collector = new Collector(archiveOptionConfigFileName);
         }
 
 

@@ -24,7 +24,7 @@
         
         <DataTemplate x:Key="ItemControlTemplate">
             <DockPanel>
-                <CheckBox IsChecked="{Binding IsChecked, Converter={StaticResource IsCheckedConverter}}"/>
+                <CheckBox IsChecked="{Binding IsSelected, Converter={StaticResource IsCheckedConverter}}"/>
                 <TextBlock Text="{Binding Name}"/>
             </DockPanel>
         </DataTemplate>

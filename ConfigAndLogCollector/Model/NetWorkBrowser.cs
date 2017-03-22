@@ -156,7 +156,7 @@ namespace ConfigAndLogCollector.Model
             }
             catch (Exception ex)
             {
-                return null;
+                throw new Exception("Error in getNetworkComputers: " + ex.Message);
             }
             finally
             {
