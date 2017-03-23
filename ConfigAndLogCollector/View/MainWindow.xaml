@@ -21,11 +21,12 @@
         </Style>
 
         <converters:IsCheckedConverter x:Key="IsCheckedConverter"/>
+        <converters:ShareNameConverter x:Key="ShareNameConverter"/>
         
-        <DataTemplate x:Key="ItemControlTemplate">
+        <DataTemplate x:Key="ShareItemControlTemplate">
             <DockPanel>
                 <CheckBox IsChecked="{Binding IsSelected, Converter={StaticResource IsCheckedConverter}}"/>
-                <TextBlock Text="{Binding Name}"/>
+                <TextBlock Text="{Binding Name, Converter={StaticResource ShareNameConverter}}"/>
             </DockPanel>
         </DataTemplate>
         
@@ -51,14 +52,17 @@
 
         
         <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
-        <!-- available tools -->
+        <!-- available shares -->
         <TextBlock Grid.Row="0" Grid.Column="0" 
                    Style="{StaticResource TextBlockStyle1}" 
                    Text="List of available tools on the network" TextWrapping="Wrap"
                    HorizontalAlignment="Left" VerticalAlignment="Center"/>
         <ListBox Grid.Row="1" Grid.Column="0" 
                  MinHeight="100" 
-                 Style="{StaticResource ListBoxStyle1}">
+                 Style="{StaticResource ListBoxStyle1}"
+                 ItemsSource="{Binding ShareList}"
+                 ItemTemplate="{StaticResource ShareItemControlTemplate}">
+            
         </ListBox>
 
         

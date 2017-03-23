@@ -14,10 +14,27 @@ namespace ConfigAndLogCollector.Model
 
         NetworkCommunicator NetComm { get; set; }
         ArchiveOptions ArchOptions { get; set; }
-        List<string> ExtensionList { get; set; }
+
+        private List<string> ExtensionList
+        {
+            get
+            {
+                return CreateExtensionList();
+            }
+        }
+
+        private List<string> CreateExtensionList()
+        {
+            List<string> extList = new List<string>();
 
 
-        public List<ShareData> SharedFileList {
+
+            return extList;
+        }
+
+
+        public List<ShareData> SharedFileList
+        {
             get
             {
                 return NetComm.GetFileListOfShares();

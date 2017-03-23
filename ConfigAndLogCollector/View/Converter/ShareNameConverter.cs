@@ -8,7 +8,7 @@ using System.Windows.Data;
 
 namespace ConfigAndLogCollector.View.Converter
 {
-    public class IsCheckedConverter :IValueConverter
+    class ShareNameConverter :IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

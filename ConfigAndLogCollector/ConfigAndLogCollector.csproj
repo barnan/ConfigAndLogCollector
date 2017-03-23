@@ -80,6 +80,7 @@
     <Compile Include="ViewModel\ConfigAndLogCollectorViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="View\Converter\IsCheckedConverter.cs" />
+    <Compile Include="View\Converter\ShareNameConverter.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

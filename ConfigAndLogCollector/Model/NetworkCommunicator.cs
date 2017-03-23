@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NLog;
+using System.IO;
 
 namespace ConfigAndLogCollector.Model
 {
@@ -59,18 +60,26 @@ namespace ConfigAndLogCollector.Model
                     //get all files of each share:
                     foreach (Share sh in shareColl)
                     {
-                        ShareData filesOfOneShare = new ShareData();
-                        filesOfOneShare.Name = sh.NetName;
-
-                        if (sh.IsFileSystem)
+                        try
                         {
-                            System.IO.DirectoryInfo dirInfo = sh.Root;
-                            System.IO.FileInfo[] Flds = dirInfo.GetFiles();
-                            for (int i = 0; i < Flds.Length ; i++)
-                                filesOfOneShare.Add(new SharedFile() { Path = Flds[i].FullName, IsSelected = false});
-                        }
+                            ShareData filesOfOneShare = new ShareData();
+                            filesOfOneShare.Name = sh.NetName;
 
-                        sharedFileList.Add(filesOfOneShare);
+                            if (sh.IsFileSystem)
+                            {
+                                DirectoryInfo dirInfo = sh.Root;
+                                FileInfo[] Flds = dirInfo.GetFiles("*",SearchOption.AllDirectories);
+                                for (int i = 0; i < Flds.Length; i++)
+                                    filesOfOneShare.Add(new SharedFile() { Path = Flds[i].FullName, IsSelected = false });
+                            }
+
+                            sharedFileList.Add(filesOfOneShare);
+                        }
+                        catch(Exception ex)
+                        {
+                            _logger.Error("Error in GetFileListOfShares: " + ex.Message);
+                        }
+                        
                     }
                 }
             }

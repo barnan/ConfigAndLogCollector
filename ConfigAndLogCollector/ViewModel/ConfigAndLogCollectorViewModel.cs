@@ -28,6 +28,10 @@ namespace ConfigAndLogCollector.ViewModel
         }
 
 
+        public List<ShareData> ShareList
+        {
+            get { return Collector.SharedFileList; }
+        }
 
 
     }
