@@ -35,10 +35,7 @@ namespace ConfigAndLogCollector.Model
 
         public List<ShareData> SharedFileList
         {
-            get
-            {
-                return NetComm.GetFileListOfShares();
-            }
+            get { return new List<ShareData>(); } //NetComm.GetFileListOfShares(); }
         }
 
 

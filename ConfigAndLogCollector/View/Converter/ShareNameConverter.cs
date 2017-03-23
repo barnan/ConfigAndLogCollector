@@ -8,14 +8,23 @@ using System.Windows.Data;
 
 namespace ConfigAndLogCollector.View.Converter
 {
-    class ShareNameConverter :IValueConverter
+    class ShareNameConverter :IMultiValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            return Binding.DoNothing;
+            if (values.Length < 2)
+                return Binding.DoNothing;
+
+            string name = values[0] as string;
+            string serverName = values[1] as string;
+
+            if (name == null || serverName == null)
+                return Binding.DoNothing;
+
+            return serverName + " - " + name;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

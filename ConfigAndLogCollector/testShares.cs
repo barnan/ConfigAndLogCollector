@@ -15,7 +15,7 @@ class SharesTest
 	//{
 	//	TestShares();
 	//}
-	
+
 	static void TestShares() 
 	{
 		// Enumerate shares on local computer

@@ -62,18 +62,20 @@ namespace ConfigAndLogCollector.Model
                     {
                         try
                         {
-                            ShareData filesOfOneShare = new ShareData();
-                            filesOfOneShare.Name = sh.NetName;
-
-                            if (sh.IsFileSystem)
+                            if (sh.IsFileSystem && sh.ShareType == ShareType.Disk)
                             {
+                                ShareData filesOfOneShare = new ShareData();
+                                filesOfOneShare.Name = sh.NetName;
+                                filesOfOneShare.ServerName = pcName;
+
                                 DirectoryInfo dirInfo = sh.Root;
                                 FileInfo[] Flds = dirInfo.GetFiles("*",SearchOption.AllDirectories);
                                 for (int i = 0; i < Flds.Length; i++)
                                     filesOfOneShare.Add(new SharedFile() { Path = Flds[i].FullName, IsSelected = false });
-                            }
 
-                            sharedFileList.Add(filesOfOneShare);
+                                sharedFileList.Add(filesOfOneShare);
+                            }
+                            
                         }
                         catch(Exception ex)
                         {

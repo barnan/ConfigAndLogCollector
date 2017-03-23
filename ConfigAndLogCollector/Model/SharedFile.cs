@@ -10,6 +10,7 @@ namespace ConfigAndLogCollector.Model
     public class ShareData
     {
         public string Name { get; set; }
+        public string ServerName { get; set; }
         public bool IsSelected { get; set; }
         List<SharedFile> FileList { get; set; }
 
@@ -46,10 +47,5 @@ namespace ConfigAndLogCollector.Model
         public bool IsSelected { get; set; }
 
     }
-
-
-
-
-
 
 }

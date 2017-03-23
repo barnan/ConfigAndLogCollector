@@ -12,12 +12,29 @@ namespace ConfigAndLogCollector.View.Converter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return Binding.DoNothing;
+            try
+            {
+                bool resu = (bool)value;
+                return resu;
+            }
+            catch (Exception ex)
+            {
+                return Binding.DoNothing;
+            }
+
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotImplementedException();
+            try
+            {
+                bool resu = (bool)value;
+                return resu;
+            }
+            catch (Exception ex)
+            {
+                return Binding.DoNothing;
+            }
         }
     }
 }
