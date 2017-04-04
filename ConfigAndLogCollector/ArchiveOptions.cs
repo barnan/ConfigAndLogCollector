@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,26 +18,13 @@ namespace ConfigAndLogCollector
 
 
         #region properties
-        private List<ArchOption> _optionList;
-        public List<ArchOption> OptionList
+        private ObservableCollection<ArchOption> _optionList;
+        public ObservableCollection<ArchOption> OptionList
         {
             get { return _optionList; }
             set { _optionList = value; }
         }
 
-        private string _networkPath; 
-        public string NetworkPath
-        {
-            get { return _networkPath; }
-            set { _networkPath = value; }
-        }
-
-        private string[] _toolNames;
-        public string[] ToolNames
-        {
-            get { return _toolNames; }
-            set { _toolNames = value; }
-        }
         #endregion
 
         #region constructors
@@ -44,16 +32,12 @@ namespace ConfigAndLogCollector
         {
         }
 
-        public ArchiveOptions(string pa, string[] toolnames, List<ArchOption> opl = null) //, string pcnamefilter)
+        public ArchiveOptions(string pa, string[] toolnames, ObservableCollection<ArchOption> opl = null) //, string pcnamefilter)
         {
-
-            this.NetworkPath = pa;
-            this.ToolNames = toolnames;
-
             if (opl != null)
                 this.OptionList = opl;
             else
-                this.OptionList = new List<ArchOption>();
+                this.OptionList = new ObservableCollection<ArchOption>();
 
         }
         #endregion
@@ -109,9 +93,7 @@ namespace ConfigAndLogCollector
                 _logger.Info("Previous path was not existing. A new ArchiveOption.xml will be created in: {0} ", configFilePath);
 
                 ArchiveOptions aop = new ArchiveOptions();
-                aop.ToolNames = new string[] { "TTR" };
-                aop.NetworkPath = " ";
-                aop.OptionList = new List<ArchOption> {new ArchOption() {Name = "Log", FileDirList = new List<ArchPath> { new ArchPath() { Path = "*.logs", RecursiveDir = false, NumOfDays = 2} } } ,
+                aop.OptionList = new ObservableCollection<ArchOption> {new ArchOption() {Name = "Log", FileDirList = new List<ArchPath> { new ArchPath() { Path = "*.logs", RecursiveDir = false, NumOfDays = 2} } } ,
                                                         new ArchOption() {Name = "All", FileDirList = new List<ArchPath> { new ArchPath() { Path = "*.xml", RecursiveDir = true} } } };
                 try
                 {
@@ -162,6 +144,15 @@ namespace ConfigAndLogCollector
         {
             get { return _name; }
             set { _name = value; }
+        }
+
+
+        private bool _isSelected;
+        [XmlIgnore]
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set { _isSelected = value; }
         }
         
 

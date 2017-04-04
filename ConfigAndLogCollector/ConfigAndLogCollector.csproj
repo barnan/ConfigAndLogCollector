@@ -79,6 +79,7 @@
     <Compile Include="testShares.cs" />
     <Compile Include="ViewModel\ConfigAndLogCollectorViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
+    <Compile Include="View\Converter\ArchiveNameConverter.cs" />
     <Compile Include="View\Converter\IsCheckedConverter.cs" />
     <Compile Include="View\Converter\ShareNameConverter.cs" />
     <Compile Include="View\MainWindow.xaml.cs">

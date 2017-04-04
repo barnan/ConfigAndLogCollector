@@ -17,14 +17,8 @@ namespace ConfigAndLogCollector.Model
 
         public SharedFile this[int i]
         {
-            get
-            {
-                return FileList[i];
-            }
-            set
-            {
-                FileList[i] = value;
-            }
+            get { return FileList[i]; }
+            set { FileList[i] = value; }
         }
 
         public void Add(SharedFile shf)
@@ -45,7 +39,6 @@ namespace ConfigAndLogCollector.Model
     {
         public string Path { get; set; }
         public bool IsSelected { get; set; }
-
     }
 
 }

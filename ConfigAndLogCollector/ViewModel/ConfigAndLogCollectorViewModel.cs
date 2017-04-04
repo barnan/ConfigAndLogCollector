@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,6 @@ namespace ConfigAndLogCollector.ViewModel
 
         public RelayCommand GetDataCommand { get; set; }
         private Collector Collector { get; set; }
-        //public RepresentedLists _representedLists;
 
 
 
@@ -25,12 +25,24 @@ namespace ConfigAndLogCollector.ViewModel
             string archiveOptionConfigFileName = ConfigurationManager.AppSettings["ArchiveOptionFile"];
 
             Collector = new Collector(archiveOptionConfigFileName);
-        }
 
+        }
 
         public List<ShareData> ShareList
         {
             get { return Collector.SharedFileList; }
+        }
+
+        public ObservableCollection<ArchOption> OptionList
+        {
+            get { return Collector.ArchOptions.OptionList; }
+        }
+
+
+
+        public ObservableCollection<ArchOption> ExtensionList
+        {
+            get { return Collector.ExtensionList; }
         }
 
 
