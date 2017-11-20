@@ -12,7 +12,7 @@ using ConfigAndLogCollector.Model;
 
 namespace ConfigAndLogCollector.ViewModel
 {
-    class ConfigAndLogCollectorViewModel :ViewModelBase
+    class ConfigAndLogCollectorViewModel : ViewModelBase
     {
 
         public RelayCommand GetDataCommand { get; set; }

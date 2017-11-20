@@ -12,8 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ConfigAndLogCollectorUI.ViewModel;
 
-namespace ConfigAndLogCollector
+namespace ConfigAndLogCollectorUI
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -24,8 +25,9 @@ namespace ConfigAndLogCollector
         {
             InitializeComponent();
 
-            ViewModel.ConfigAndLogCollectorViewModel vm = new ViewModel.ConfigAndLogCollectorViewModel();
+            ConfigAndLogCollectorViewModel vm = new ConfigAndLogCollectorViewModel();
             DataContext = vm;
         }
+
     }
 }

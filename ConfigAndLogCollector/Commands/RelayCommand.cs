@@ -7,13 +7,13 @@ using System.Windows.Input;
 
 namespace ConfigAndLogCollector.Commands
 {
-    class RelayCommand :ICommand
+    class RelayCommand : ICommand
     {
         private readonly Action _singleAction;
         private readonly Action<object> _paramAction;
         private readonly Func<object, bool> _canExecute;
 
-        public RelayCommand(Action act, Func<object, bool> canexec = null )
+        public RelayCommand(Action act, Func<object, bool> canexec = null)
         {
             _singleAction = act;
             _canExecute = canexec;
