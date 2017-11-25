@@ -8,7 +8,7 @@ namespace BaseClasses
 {
 
     [XmlRoot(nameof(ArchiveOptions))]
-    internal class ArchiveOptions
+    public class ArchiveOptions
     {
         [XmlArray("ArchiveOptionList"), XmlArrayItem(typeof(ArchiveOption), ElementName = "ArchiveOption")]
         public List<ArchiveOption> OptionList { get; set; }

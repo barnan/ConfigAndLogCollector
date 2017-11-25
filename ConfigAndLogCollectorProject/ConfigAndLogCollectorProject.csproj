@@ -45,9 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ArchiveOptions.cs" />
     <Compile Include="Collector.cs" />
-    <Compile Include="LoggerExtensionMethod.cs" />
     <Compile Include="Repositories\XmlConfigRepo.cs" />
     <Compile Include="NetWorkBrowser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

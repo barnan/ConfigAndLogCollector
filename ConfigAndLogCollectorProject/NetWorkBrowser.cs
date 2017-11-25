@@ -129,8 +129,8 @@ namespace ConfigAndLogCollector.Model
                 //for full details of method signature
                 int ret = NetServerEnum(null, 100, ref buffer, MAX_PREFERRED_LENGTH,
                     out entriesRead,
-                    out totalEntries, SV_TYPE_WORKSTATION | SV_TYPE_SERVER, null, out 
-					resHandle);
+                    out totalEntries, SV_TYPE_WORKSTATION | SV_TYPE_SERVER, null, out
+                    resHandle);
                 //if the returned with a NERR_Success (C++ term), =0 for C#
                 if (ret == 0)
                 {

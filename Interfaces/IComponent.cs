@@ -3,7 +3,7 @@ namespace ConfigAndLogCollectorInterfaces
 {
     public interface IComponent
     {
-        string Name { get; set; }
-        string Title { get; set; }
+        string Name { get; }
+        string Title { get; }
     }
 }
