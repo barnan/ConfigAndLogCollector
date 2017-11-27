@@ -1,12 +1,12 @@
-﻿using NLog;
+﻿using BaseClasses;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 
-namespace BaseClasses
+namespace ConfigAndLogCollectorProject.Repositories.XmlConfigRepo
 {
-
     [XmlRoot(nameof(ArchiveOptions))]
     public class ArchiveOptions
     {
@@ -14,14 +14,17 @@ namespace BaseClasses
         public List<ArchiveOption> OptionList { get; set; }
 
         [XmlIgnore]
-        public ILogger Logger { get; private set; }
+        private ILogger Logger { get; set; }
 
         [XmlIgnore]
         const string CLASS_NAME = nameof(ArchiveOptions);
 
+
         public ArchiveOptions()
         {
+            OptionList = new List<ArchiveOption>();
         }
+
 
         public ArchiveOptions(List<ArchiveOption> optList)
         {
@@ -66,7 +69,7 @@ namespace BaseClasses
         }
 
 
-        private static bool WriteToFile(string path, ArchiveOptions options)
+        public static bool WriteToFile(string path, ArchiveOptions options)
         {
             try
             {
@@ -89,7 +92,8 @@ namespace BaseClasses
             }
         }
 
-        private static ArchiveOptions ReadFromFile(string path)
+
+        public static ArchiveOptions ReadFromFile(string path)
         {
             ArchiveOptions serResult = null;
 
@@ -115,80 +119,4 @@ namespace BaseClasses
         }
 
     }
-
-
-    [XmlType("ArchiveOption")]
-    public class ArchiveOption
-    {
-        [XmlElement(nameof(Name))]
-        public string Name { get; set; }
-
-        [XmlElement(nameof(Title))]
-        public string Title { get; set; }
-
-        //[XmlArray("ArchivePathList"), XmlArrayItem(typeof(ArchPath), ElementName = "ArchPath")]
-        public List<BasePath> ArchivePathList { get; set; }
-
-        public ArchiveOption()
-        {
-        }
-
-        public ArchiveOption(string name, string title)
-        {
-            Name = name;
-            Title = title;
-        }
-
-        public ArchiveOption(string name, string title, List<BasePath> archpathList)
-            : this(name, title)
-        {
-            ArchivePathList = archpathList;
-        }
-
-    }
-
-
-    [XmlType("ArchPath")]
-    public class ArchPath : BasePath
-    {
-        [XmlElement("NumberOfDays"), IODescription("Reperesent the age of represented paths.")]
-        public int NumberOfDays { get; set; }
-
-        [XmlIgnore]
-        public bool IsSeleected { get; set; }
-
-
-        public ArchPath()
-        {
-        }
-
-        public ArchPath(string path, bool isrecursive, int numberOfDays)
-            : base(path, isrecursive)
-        {
-            NumberOfDays = numberOfDays;
-        }
-    }
-
-
-    [XmlInclude(typeof(ArchPath))]
-    public class BasePath
-    {
-        [XmlElement("IsRecursive"), IODescription("true->content of subfolders is mapped also. false->only the given folders are mapped.")]
-        public bool IsRecursive { get; set; }
-
-        [XmlElement("Path"), IODescription("The mapped route.")]
-        public string Path { get; set; }
-
-        public BasePath()
-        {
-        }
-
-        public BasePath(string path, bool isrecursive)
-        {
-            Path = path;
-            IsRecursive = isrecursive;
-        }
-    }
-
-
 }

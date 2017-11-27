@@ -3,7 +3,7 @@ namespace Interfaces
 {
     public interface IInitializable
     {
-        bool Initialize();
+        bool Init();
         bool IsInitialized { get; }
     }
 }

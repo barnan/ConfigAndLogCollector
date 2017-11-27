@@ -41,11 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IComponent.cs" />
-    <Compile Include="IConfigRepository.cs" />
+    <Compile Include="IArchiveOption.cs" />
+    <Compile Include="ICollector.cs" />
+    <Compile Include="IGetterRepository.cs" />
+    <Compile Include="INamedElement.cs" />
     <Compile Include="IInitializable.cs" />
     <Compile Include="IRepository.cs" />
-    <Compile Include="IShareRepository.cs" />
+    <Compile Include="ISharedData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

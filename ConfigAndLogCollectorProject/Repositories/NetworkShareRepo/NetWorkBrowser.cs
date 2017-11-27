@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Collections;
 
-namespace ConfigAndLogCollector.Model
+namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
 {
     #region NetworkBrowser CLASS
     /// <summary>
