@@ -32,8 +32,7 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
             {
                 if (!IsInitialized)
                 {
-                    Logger?.InfoLog($"Not initialized yet.", CLASS_NAME);
-                    return false;
+                    throw new Exception(Logger?.InfoLog($"Not initialized yet.", CLASS_NAME));
                 }
 
                 _archiveOptions.OptionList.Add(element);
@@ -70,13 +69,15 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
 
                     _archiveOptions = new ArchiveOptions();
 
+                    // TODO: save it
+
                     return IsInitialized = true;
                 }
 
                 if (!CheckFileAcessibility())
                 {
-                    Logger?.InfoLog("The given xml can not be openned.", CLASS_NAME);
-                    return IsInitialized = false;
+                    IsInitialized = false;
+                    throw new Exception(Logger?.InfoLog("The given xml can not be openned.", CLASS_NAME));
                 }
 
                 lock (_fileLock)
@@ -89,8 +90,9 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
             }
             catch (Exception ex)
             {
+                IsInitialized = false;
                 Logger?.ErrorLog($"Exception occured: {ex}", CLASS_NAME);
-                return IsInitialized = false;
+                throw;
             }
             finally
             {
@@ -125,16 +127,18 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
                         return true;
                     }
                 }
-                catch
+                catch (AccessViolationException)
                 {
-                    Logger?.Info($"File {FilePath} is not accessible.", CLASS_NAME);
-                    return false;
+                    throw new Exception(Logger?.InfoLog($"File {FilePath} is not accessible.", CLASS_NAME));
+                }
+                catch (Exception)
+                {
+                    throw;
                 }
             }
         }
 
         #endregion
-
 
     }
 }

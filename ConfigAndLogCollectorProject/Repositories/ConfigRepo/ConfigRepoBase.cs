@@ -34,8 +34,7 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
             {
                 if (!IsInitialized)
                 {
-                    Logger?.InfoLog($"Not initialized yet.", CLASS_NAME);
-                    return IsInitialized;
+                    throw new Exception(Logger?.InfoLog($"Not initialized yet.", CLASS_NAME));
                 }
 
                 Logger.InfoLog($"{element} is deleted from _archiveOptions.", CLASS_NAME);
@@ -51,8 +50,7 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
             {
                 if (!IsInitialized)
                 {
-                    Logger?.InfoLog($"Not initialized yet.", CLASS_NAME);
-                    return null;
+                    throw new Exception(Logger?.InfoLog($"Not initialized yet.", CLASS_NAME));
                 }
 
                 if (id > _archiveOptions?.OptionList?.Count)

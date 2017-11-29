@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace Functionality
+namespace ConfigAndLogCollectorProject
 {
     public class Collector : ICollector
     {
@@ -34,16 +34,21 @@ namespace Functionality
             {
                 Monitor.Enter(_ownLock);
 
-                _archiveOptionRepository.Init();
-
-                _shareRepository?.Init();
+                if ((!_archiveOptionRepository?.Init() ?? false) || (!_shareRepository?.Init() ?? false))
+                {
+                    return false;
+                }
 
                 return IsInitialized = true;
             }
             catch (Exception ex)
             {
-                Logger?.ErrorLog($"Exception occured: {ex}", CLASS_NAME);
-                return IsInitialized = false;
+                IsInitialized = false;
+
+                string message = Logger?.ErrorLog($"Exception occured: {ex}", CLASS_NAME);
+                OnError(this, message);
+
+                return false;
             }
             finally
             {
@@ -66,13 +71,24 @@ namespace Functionality
         {
             get
             {
-                if (!IsInitialized)
+                try
                 {
-                    Logger.InfoLog("archiveoptions were asked, but it is not initialized yet.", CLASS_NAME);
+                    if (!IsInitialized)
+                    {
+                        string message = Logger?.InfoLog("Archiveoptions were asked, but it is not initialized yet.", CLASS_NAME);
+                        OnInfo(this, message);
+                        return null;
+                    }
+
+                    return _archiveOptionRepository.GetAll();
+                }
+                catch (Exception ex)
+                {
+                    string message = Logger?.ErrorLog($"Exception occured: {ex}", CLASS_NAME);
+                    OnError(this, message);
                     return null;
                 }
 
-                return _archiveOptionRepository.GetAll();
             }
         }
 
@@ -81,13 +97,24 @@ namespace Functionality
         {
             get
             {
-                if (!IsInitialized)
+                try
                 {
-                    Logger.InfoLog("archiveoptions were asked, but it is not initialized yet.", CLASS_NAME);
+                    if (!IsInitialized)
+                    {
+                        string message = Logger?.InfoLog("Share data list were asked, but it is not initialized yet.", CLASS_NAME);
+                        OnInfo(this, message);
+                        return null;
+                    }
+
+                    return _shareRepository.GetAll();
+                }
+                catch (Exception ex)
+                {
+                    string message = Logger?.ErrorLog($"Exception occured: {ex}", CLASS_NAME);
+                    OnError(this, message);
                     return null;
                 }
 
-                return _shareRepository.GetAll();
             }
         }
 

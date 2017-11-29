@@ -8,7 +8,7 @@ using System.Threading;
 namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
 {
 
-    class NetworkShareRepo : IGetterRepository<ISharedData>, IInitializable
+    public class NetworkShareRepo : IGetterRepository<ISharedData>, IInitializable
     {
         public bool IsInitialized { get; set; }
         private ILogger Logger { get; set; }
@@ -33,14 +33,12 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
             {
                 if (!IsInitialized)
                 {
-                    Logger?.InfoLog($"Not initialized yet.", CLASS_NAME);
-                    return null;
+                    throw new Exception(Logger?.InfoLog($"Not initialized yet.", CLASS_NAME));
                 }
 
                 if (id > _shareList?.Count)
                 {
-                    Logger?.Info("The required index is higher, than number of available options.");
-                    return null;
+                    throw new IndexOutOfRangeException(Logger?.InfoLog("The required index is higher, than number of available options.", CLASS_NAME));
                 }
 
                 return _shareList[id];
@@ -53,8 +51,7 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
             {
                 if (!IsInitialized)
                 {
-                    Logger?.InfoLog($"Not initialized yet.", CLASS_NAME);
-                    return null;
+                    throw new Exception(Logger?.InfoLog($"Not initialized yet.", CLASS_NAME));
                 }
 
                 return _shareList;
@@ -81,8 +78,7 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
 
                 if (_shareList.Count == 0)
                 {
-                    Logger?.InfoLog("The arrived share list has zero elements.", CLASS_NAME);
-                    return false;
+                    throw new Exception(Logger?.InfoLog("The arrived share list has zero elements.", CLASS_NAME));
                 }
 
                 Logger?.InfoLog("Initialized.", CLASS_NAME);
