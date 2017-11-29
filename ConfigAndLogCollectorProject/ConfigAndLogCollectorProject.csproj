@@ -46,12 +46,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collector.cs" />
+    <Compile Include="Repositories\ConfigRepo\ConfigRepoBase.cs" />
     <Compile Include="Repositories\NetworkShareRepo\SharedData.cs" />
-    <Compile Include="Repositories\XmlConfigRepo\ArchiveOptions.cs" />
+    <Compile Include="Repositories\ConfigRepo\TestConfigRepo.cs" />
+    <Compile Include="Repositories\ConfigRepo\ArchiveOptions.cs" />
     <Compile Include="Repositories\NetworkShareRepo\NetWorkBrowser.cs" />
     <Compile Include="Repositories\NetworkShareRepo\NetworkCommunicator.cs" />
     <Compile Include="Repositories\NetworkShareRepo\Shares.cs" />
-    <Compile Include="Repositories\XmlConfigRepo\XmlConfigRepo.cs" />
+    <Compile Include="Repositories\ConfigRepo\XmlConfigRepo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\NetworkShareRepo\NetworkShareRepo.cs" />
   </ItemGroup>
@@ -68,6 +70,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

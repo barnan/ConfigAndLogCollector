@@ -41,7 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IArchiveOption.cs" />
     <Compile Include="ICollector.cs" />
     <Compile Include="IGetterRepository.cs" />
     <Compile Include="INamedElement.cs" />

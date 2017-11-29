@@ -1,89 +1,32 @@
 ﻿using BaseClasses;
-using Interfaces;
 using NLog;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 
-namespace ConfigAndLogCollectorProject.Repositories.XmlConfigRepo
+namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
 {
 
-    class XmlConfigRepo : IRepository<ArchiveOption>, INamedElement, IInitializable
+    class XmlConfigRepo : ConfigRepoBase
     {
-        private ILogger Logger { get; set; }
         private string FilePath { get; set; }
-        private const string CLASS_NAME = nameof(XmlConfigRepo);
-        private object _ownLock = new object();
         private object _fileLock = new object();
 
         private ArchiveOptions _archiveOptions { get; set; }
 
 
         public XmlConfigRepo(string path, ILogger logger)
+            : base(logger)
         {
+            CLASS_NAME = nameof(XmlConfigRepo);
             FilePath = path;
-
-            Logger = logger;
+            Name = nameof(XmlConfigRepo);
         }
 
 
         #region IRepository
 
-        public bool Delete(ArchiveOption element)
-        {
-            lock (_ownLock)
-            {
-                if (!IsInitialized)
-                {
-                    Logger?.InfoLog($"Not initialized yet.", CLASS_NAME);
-                    return IsInitialized;
-                }
-
-                Logger.InfoLog($"{element} is deleted from _archiveOptions.", CLASS_NAME);
-
-                return _archiveOptions?.OptionList?.Remove(element) ?? false;
-            }
-        }
-
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public ArchiveOption Get(int id)
-        {
-            lock (_ownLock)
-            {
-                if (!IsInitialized)
-                {
-                    Logger?.InfoLog($"Not initialized yet.", CLASS_NAME);
-                    return null;
-                }
-
-                if (id > _archiveOptions?.OptionList?.Count)
-                {
-                    Logger?.Info("The required index is higher, than number of available options.");
-                    return null;
-                }
-
-                return _archiveOptions.OptionList[id];
-            }
-        }
-
-
-        public IList<ArchiveOption> GetAll()
-        {
-            lock (_ownLock)
-            {
-                return _archiveOptions?.OptionList;
-            }
-        }
-
-
-        public bool Save(ArchiveOption element)
+        public override bool Save(ArchiveOption element)
         {
             lock (_ownLock)
             {
@@ -107,19 +50,9 @@ namespace ConfigAndLogCollectorProject.Repositories.XmlConfigRepo
         #endregion
 
 
-        #region INamedElement
-
-        public string Name { get; private set; }
-
-        #endregion
-
-
         #region IInitializable
 
-        public bool IsInitialized { get; private set; }
-
-
-        public bool Init()
+        public override bool Init()
         {
             try
             {

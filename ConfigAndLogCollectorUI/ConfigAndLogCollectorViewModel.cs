@@ -10,5 +10,9 @@ namespace ConfigAndLogCollectorUI.ViewModel
 
     public class ConfigAndLogCollectorViewModel
     {
+
+
+
+
     }
 }

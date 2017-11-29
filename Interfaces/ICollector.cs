@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using BaseClasses;
+using System.Collections.Generic;
 
 namespace Interfaces
 {
@@ -15,7 +16,7 @@ namespace Interfaces
         void OnInfo(object sender, string message);
 
         IList<ISharedData> SharedDataList { get; }
-        IList<IArchiveOption> ArchiveOptionList { get; }
+        IList<ArchiveOption> ArchiveOptionList { get; }
 
     }
 }
