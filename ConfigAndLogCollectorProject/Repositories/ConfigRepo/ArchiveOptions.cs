@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 
-namespace ConfigAndLogCollectorProject.Repositories.XmlConfigRepo
+namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
 {
     [XmlRoot(nameof(ArchiveOptions))]
     public class ArchiveOptions
