@@ -18,11 +18,19 @@ namespace ConfigAndLogCollectorProject
         ILogger Logger { get; set; }
 
 
-        public Collector(IRepository<ArchiveOption> aOption, IGetterRepository<ISharedData> shareDat, ILogger logger)
+        public Collector(IRepository<ArchiveOption> aOption, IGetterRepository<ISharedData> shareDat)
         {
+            try
+            {
+                Logger = LogManager.GetCurrentClassLogger();
+            }
+            catch (Exception)
+            {
+                //
+            }
+
             _archiveOptionRepository = aOption;
             _shareRepository = shareDat;
-            Logger = logger;
         }
 
 
@@ -45,7 +53,7 @@ namespace ConfigAndLogCollectorProject
             {
                 IsInitialized = false;
 
-                string message = Logger?.ErrorLog($"Exception occured: {ex}", CLASS_NAME);
+                string message = Logger?.ErrorLog($"Exception occured: {ex.Message}", CLASS_NAME);
                 OnError(this, message);
 
                 return false;
@@ -84,7 +92,7 @@ namespace ConfigAndLogCollectorProject
                 }
                 catch (Exception ex)
                 {
-                    string message = Logger?.ErrorLog($"Exception occured: {ex}", CLASS_NAME);
+                    string message = Logger?.ErrorLog($"Exception occured: {ex.Message}", CLASS_NAME);
                     OnError(this, message);
                     return null;
                 }
@@ -110,7 +118,7 @@ namespace ConfigAndLogCollectorProject
                 }
                 catch (Exception ex)
                 {
-                    string message = Logger?.ErrorLog($"Exception occured: {ex}", CLASS_NAME);
+                    string message = Logger?.ErrorLog($"Exception occured: {ex.Message}", CLASS_NAME);
                     OnError(this, message);
                     return null;
                 }

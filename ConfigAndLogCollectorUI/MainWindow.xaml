@@ -125,14 +125,22 @@
 
             <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
             <!-- Saving output -->
-            <StackPanel Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Orientation="Vertical">
-                <TextBlock Style="{StaticResource TextBlockStyle1}" 
+            <!--<StackPanel Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2" Orientation="Vertical">-->
+                <!--<TextBlock Style="{StaticResource TextBlockStyle1}" 
                        Text="Messages" TextWrapping="Wrap"
-                       HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <TextBox MinWidth="300" HorizontalAlignment="Left" Style="{StaticResource CommonStyle}"/>
-            </StackPanel>
+                       HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5,5,0,5"/>-->
+                <!--<TextBox MinWidth="300" Height="60" HorizontalAlignment="Left" 
+                         Style="{StaticResource CommonStyle}"
+                         ScrollViewer.VerticalScrollBarVisibility="Auto"/>-->
+            <!--</StackPanel>-->
+            <GroupBox Header="Message" MinHeight="100" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2"  >
+                <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding MessageOnScreenList}">
+                    <DataGridTextColumn Header="MessageType" Binding="{Binding Type}" />
+                    <DataGridTextColumn Header="Message" Binding="{Binding Message}"/>
+                </DataGrid>
+            </GroupBox>
 
-            
+
             <Ellipse Grid.Column="2" Grid.Row="4" 
                      Fill="Gray" Stroke="Black" Style="{StaticResource CommonStyle}"
                      HorizontalAlignment="Right" VerticalAlignment="Bottom"  
