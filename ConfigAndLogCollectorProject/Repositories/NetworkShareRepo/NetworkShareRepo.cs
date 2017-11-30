@@ -18,10 +18,18 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
         private IList<ISharedData> _shareList;
 
 
-        public NetworkShareRepo(ILogger logger)
+        public NetworkShareRepo()
         {
-            Logger = logger;
-            _nc = new NetworkCommunicator(logger);
+            try
+            {
+                Logger = LogManager.GetCurrentClassLogger();
+            }
+            catch (Exception)
+            {
+                //
+            }
+
+            _nc = new NetworkCommunicator(Logger);
         }
 
 

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
 {
-    abstract class ConfigRepoBase : IRepository<ArchiveOption>, INamedElement, IInitializable
+    public abstract class ConfigRepoBase : IRepository<ArchiveOption>, INamedElement, IInitializable
     {
 
         protected ILogger Logger { get; set; }
@@ -20,9 +20,8 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
         private ArchiveOptions _archiveOptions { get; set; }
 
 
-        public ConfigRepoBase(ILogger logger)
+        public ConfigRepoBase()
         {
-            Logger = logger;
         }
 
 
@@ -37,7 +36,7 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
                     throw new Exception(Logger?.InfoLog($"Not initialized yet.", CLASS_NAME));
                 }
 
-                Logger.InfoLog($"{element} is deleted from _archiveOptions.", CLASS_NAME);
+                Logger?.InfoLog($"{element} is deleted from _archiveOptions.", CLASS_NAME);
 
                 return _archiveOptions?.OptionList?.Remove(element) ?? false;
             }

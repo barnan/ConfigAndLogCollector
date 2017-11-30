@@ -7,7 +7,7 @@ using System.Threading;
 namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
 {
 
-    class XmlConfigRepo : ConfigRepoBase
+    public class XmlConfigRepo : ConfigRepoBase
     {
         private string FilePath { get; set; }
         private object _fileLock = new object();
@@ -15,12 +15,21 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
         private ArchiveOptions _archiveOptions { get; set; }
 
 
-        public XmlConfigRepo(string path, ILogger logger)
-            : base(logger)
+        public XmlConfigRepo(string path)
+            : base()
         {
             CLASS_NAME = nameof(XmlConfigRepo);
-            FilePath = path;
             Name = nameof(XmlConfigRepo);
+            FilePath = path;
+
+            try
+            {
+                Logger = LogManager.GetCurrentClassLogger();
+            }
+            catch (Exception)
+            {
+                //
+            }
         }
 
 
@@ -77,7 +86,7 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
                 if (!CheckFileAcessibility())
                 {
                     IsInitialized = false;
-                    throw new Exception(Logger?.InfoLog("The given xml can not be openned.", CLASS_NAME));
+                    throw new Exception(Logger?.InfoLog("The given xml can not be opened.", CLASS_NAME));
                 }
 
                 lock (_fileLock)
@@ -127,9 +136,9 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
                         return true;
                     }
                 }
-                catch (AccessViolationException)
+                catch (AccessViolationException ex)
                 {
-                    throw new Exception(Logger?.InfoLog($"File {FilePath} is not accessible.", CLASS_NAME));
+                    throw new Exception(Logger?.InfoLog($"File {FilePath} is not accessible.", CLASS_NAME), ex);
                 }
                 catch (Exception)
                 {

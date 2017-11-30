@@ -14,8 +14,8 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
         private ArchiveOptions _archiveOptions { get; set; }
 
 
-        public TestConfigRepo(ILogger logger)
-            : base(logger)
+        public TestConfigRepo()
+            : base()
         {
 
         }
