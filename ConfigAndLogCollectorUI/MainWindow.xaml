@@ -133,18 +133,21 @@
                          Style="{StaticResource CommonStyle}"
                          ScrollViewer.VerticalScrollBarVisibility="Auto"/>-->
             <!--</StackPanel>-->
-            <GroupBox Header="Message" MinHeight="100" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2"  >
-                <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding MessageOnScreenList}">
-                    <DataGridTextColumn Header="MessageType" Binding="{Binding Type}" />
-                    <DataGridTextColumn Header="Message" Binding="{Binding Message}"/>
-                </DataGrid>
-            </GroupBox>
+            <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="3"  >
+                <GroupBox Header="Message" MinHeight="100" MinWidth="550">
+                    <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding MessageOnScreenList}" >
+                        <DataGridTextColumn Header="MessageType" Binding="{Binding Type}" />
+                        <DataGridTextColumn Header="Message" Binding="{Binding Message}"/>
+                    </DataGrid>
+                </GroupBox>
 
 
-            <Ellipse Grid.Column="2" Grid.Row="4" 
+                <Ellipse Grid.Column="2" Grid.Row="4" 
                      Fill="Gray" Stroke="Black" Style="{StaticResource CommonStyle}"
                      HorizontalAlignment="Right" VerticalAlignment="Bottom"  
                      Width="20" Height="20"/>
+            </StackPanel>
+            
 
 
 

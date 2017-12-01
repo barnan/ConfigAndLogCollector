@@ -12,7 +12,7 @@ namespace BaseClasses
         [XmlElement(nameof(Name))]
         public string Name { get; set; }
 
-        //[XmlArray("ArchivePathList"), XmlArrayItem(typeof(ArchPath), ElementName = "ArchPath")]
+        [XmlArray("ArchivePathList"), XmlArrayItem(typeof(ArchPath), ElementName = "ArchPath")]
         public List<ArchPath> ArchivePathList { get; set; }
 
         public ArchiveOption()

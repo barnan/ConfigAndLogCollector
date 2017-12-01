@@ -1,6 +1,7 @@
 ﻿using BaseClasses;
 using NLog;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 
@@ -12,7 +13,7 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
         private string FilePath { get; set; }
         private object _fileLock = new object();
 
-        private ArchiveOptions _archiveOptions { get; set; }
+        private ArchiveConfigs _archiveOptions { get; set; }
 
 
         public XmlConfigRepo(string path)
@@ -48,7 +49,7 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
 
                 lock (_fileLock)
                 {
-                    ArchiveOptions.WriteToFile(FilePath, _archiveOptions);
+                    ArchiveConfigs.WriteToFile(FilePath, _archiveOptions);
                 }
 
                 return true;
@@ -76,22 +77,24 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
                 {
                     Logger?.InfoLog("The given xml file does not exists.", CLASS_NAME);
 
-                    _archiveOptions = new ArchiveOptions();
+                    _archiveOptions = new ArchiveConfigs(new List<ArchiveOption> { new ArchiveOption("AllConfig", new List<ArchPath> { new ArchPath("*.config", true, 10) }) });
 
-                    // TODO: save it
+                    _archiveOptions.Serialize(FilePath);
 
                     return IsInitialized = true;
                 }
-
-                if (!CheckFileAcessibility())
+                else
                 {
-                    IsInitialized = false;
-                    throw new Exception(Logger?.InfoLog("The given xml can not be opened.", CLASS_NAME));
-                }
+                    if (!CheckFileAcessibility())
+                    {
+                        IsInitialized = false;
+                        throw new Exception(Logger?.InfoLog("The given xml can not be opened.", CLASS_NAME));
+                    }
 
-                lock (_fileLock)
-                {
-                    _archiveOptions = ArchiveOptions.ReadFromFile(FilePath);
+                    lock (_fileLock)
+                    {
+                        _archiveOptions = ArchiveConfigs.ReadFromFile(FilePath);
+                    }
                 }
 
                 Logger?.InfoLog("Initialized.", CLASS_NAME);
@@ -100,8 +103,8 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
             catch (Exception ex)
             {
                 IsInitialized = false;
-                Logger?.ErrorLog($"Exception occured: {ex}", CLASS_NAME);
-                throw;
+                string message = Logger?.ErrorLog($"Exception occured: {ex}", CLASS_NAME);
+                throw new Exception(message, ex);
             }
             finally
             {
@@ -138,7 +141,8 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
                 }
                 catch (AccessViolationException ex)
                 {
-                    throw new Exception(Logger?.InfoLog($"File {FilePath} is not accessible.", CLASS_NAME), ex);
+                    string message = Logger?.InfoLog($"File {FilePath} is not accessible.", CLASS_NAME);
+                    throw new Exception(message, ex);
                 }
                 catch (Exception)
                 {

@@ -44,6 +44,7 @@ namespace ConfigAndLogCollectorProject
 
                 if ((!_archiveOptionRepository?.Init() ?? false) || (!_shareRepository?.Init() ?? false))
                 {
+                    Logger?.InfoLog("Repositories could not be initialized.", CLASS_NAME);
                     return false;
                 }
 

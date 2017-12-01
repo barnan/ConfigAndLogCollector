@@ -7,8 +7,9 @@ using System.Xml.Serialization;
 
 namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
 {
-    [XmlRoot(nameof(ArchiveOptions))]
-    public class ArchiveOptions
+
+    [XmlRoot(nameof(ArchiveConfigs))]
+    public class ArchiveConfigs
     {
         [XmlArray("ArchiveOptionList"), XmlArrayItem(typeof(ArchiveOption), ElementName = "ArchiveOption")]
         public List<ArchiveOption> OptionList { get; set; }
@@ -17,16 +18,16 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
         private ILogger Logger { get; set; }
 
         [XmlIgnore]
-        const string CLASS_NAME = nameof(ArchiveOptions);
+        const string CLASS_NAME = nameof(ArchiveConfigs);
 
 
-        public ArchiveOptions()
+        public ArchiveConfigs()
         {
             OptionList = new List<ArchiveOption>();
         }
 
 
-        public ArchiveOptions(List<ArchiveOption> optList)
+        public ArchiveConfigs(List<ArchiveOption> optList)
         {
             OptionList = optList;
         }
@@ -37,11 +38,11 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
         /// <param name="path">path of the target xml file</param>
         /// <param name="options">instance</param>
         /// <returns></returns>
-        public bool Serialize(string path, ArchiveOptions options)
+        public bool Serialize(string path)
         {
             try
             {
-                return WriteToFile(path, options);
+                return WriteToFile(path, this);
             }
             catch (Exception ex)
             {
@@ -55,7 +56,7 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
         /// </summary>
         /// <param name="path">path of source xml file</param>
         /// <returns></returns>
-        public ArchiveOptions Deserialize(string path)
+        public ArchiveConfigs Deserialize(string path)
         {
             try
             {
@@ -69,16 +70,11 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
         }
 
 
-        public static bool WriteToFile(string path, ArchiveOptions options)
+        public static bool WriteToFile(string path, ArchiveConfigs options)
         {
             try
             {
-                if (!File.Exists(path))
-                {
-                    return false;
-                }
-
-                XmlSerializer xmlser = new XmlSerializer(typeof(ArchiveOptions));
+                XmlSerializer xmlser = new XmlSerializer(typeof(ArchiveConfigs));
                 using (FileStream fs = new FileStream(path, FileMode.Create))
                 {
                     xmlser.Serialize(fs, options);
@@ -93,9 +89,9 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
         }
 
 
-        public static ArchiveOptions ReadFromFile(string path)
+        public static ArchiveConfigs ReadFromFile(string path)
         {
-            ArchiveOptions serResult = null;
+            ArchiveConfigs serResult = null;
 
             try
             {
@@ -104,10 +100,10 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
                     return serResult;
                 }
 
-                XmlSerializer xmlser = new XmlSerializer(typeof(ArchiveOptions));
+                XmlSerializer xmlser = new XmlSerializer(typeof(ArchiveConfigs));
                 using (FileStream fs = new FileStream(path, FileMode.Open))
                 {
-                    serResult = (ArchiveOptions)xmlser.Deserialize(fs);
+                    serResult = (ArchiveConfigs)xmlser.Deserialize(fs);
                 }
 
                 return serResult;

@@ -11,7 +11,7 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
 {
     class TestConfigRepo : ConfigRepoBase
     {
-        private ArchiveOptions _archiveOptions { get; set; }
+        private ArchiveConfigs _archiveOptions { get; set; }
 
 
         public TestConfigRepo()
@@ -32,7 +32,7 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
             ArchiveOption aOpt6 = new ArchiveOption("AOption6", new List<ArchPath> { new ArchPath("*.dll", false, 5) });
 
 
-            _archiveOptions = new ArchiveOptions { OptionList = new List<ArchiveOption> { aOpt1, aOpt2, aOpt3, aOpt4, aOpt5, aOpt6 } };
+            _archiveOptions = new ArchiveConfigs { OptionList = new List<ArchiveOption> { aOpt1, aOpt2, aOpt3, aOpt4, aOpt5, aOpt6 } };
 
             return IsInitialized = true;
         }

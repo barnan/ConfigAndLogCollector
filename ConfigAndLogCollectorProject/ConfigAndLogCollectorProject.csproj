@@ -49,7 +49,7 @@
     <Compile Include="Repositories\ConfigRepo\ConfigRepoBase.cs" />
     <Compile Include="Repositories\NetworkShareRepo\SharedData.cs" />
     <Compile Include="Repositories\ConfigRepo\TestConfigRepo.cs" />
-    <Compile Include="Repositories\ConfigRepo\ArchiveOptions.cs" />
+    <Compile Include="Repositories\ConfigRepo\ArchiveConfigs.cs" />
     <Compile Include="Repositories\NetworkShareRepo\NetWorkBrowser.cs" />
     <Compile Include="Repositories\NetworkShareRepo\NetworkCommunicator.cs" />
     <Compile Include="Repositories\NetworkShareRepo\Shares.cs" />

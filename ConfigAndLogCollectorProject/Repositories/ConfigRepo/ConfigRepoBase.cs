@@ -17,7 +17,7 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
         protected object _ownLock = new object();
 
 
-        private ArchiveOptions _archiveOptions { get; set; }
+        private ArchiveConfigs _archiveOptions { get; set; }
 
 
         public ConfigRepoBase()

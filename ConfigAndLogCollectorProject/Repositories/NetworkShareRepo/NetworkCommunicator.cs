@@ -4,6 +4,7 @@ using NLog;
 using System.IO;
 using BaseClasses;
 using Interfaces;
+using System.Linq;
 
 namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
 {
@@ -47,7 +48,7 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
 
 
 
-        public List<ISharedData> GetFileListOfShares()
+        public List<ISharedData> GetFileListOfShares(List<String> toolNameList)
         {
             // using the solution from code-project (Richard Deeming)
             // https://www.codeproject.com/Articles/2939/Network-Shares-and-UNC-paths 
@@ -73,7 +74,9 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
                     {
                         try
                         {
-                            if (sh.IsFileSystem && sh.ShareType == ShareType.Disk)
+                            bool checThekList = toolNameList.Any(p => sh.NetName.Contains(p));
+
+                            if (sh.IsFileSystem && sh.ShareType == ShareType.Disk && checThekList)
                             {
                                 SharedData filesOfOneShare = new SharedData(sh.NetName, pcName, false);
 

@@ -6,9 +6,11 @@ using Interfaces;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,7 +19,7 @@ namespace ConfigAndLogCollectorUI
 {
 
 
-    public class ConfigAndLogCollectorViewModel : IInitializable
+    public class ConfigAndLogCollectorViewModel : IInitializable, INotifyPropertyChanged
     {
         private ICollector _collector;
         private string _assemblyPath;
@@ -26,18 +28,8 @@ namespace ConfigAndLogCollectorUI
         private const string CLASS_NAME = nameof(ConfigAndLogCollectorViewModel);
 
 
-
-        /// <summary>
-        /// ctor
-        /// </summary>
         public ConfigAndLogCollectorViewModel()
         {
-
-            string ConfigFileName = ConfigurationManager.AppSettings["ConfigFile"];
-            _assemblyPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
-
-            string fullPath = Path.Combine(_assemblyPath, ConfigFileName);
-
             try
             {
                 _logger = LogManager.GetCurrentClassLogger();
@@ -47,17 +39,66 @@ namespace ConfigAndLogCollectorUI
                 // HACK -> anything better?
             }
 
-            //instantiate:
-            IRepository<ArchiveOption> xmlConfigRepo = new XmlConfigRepo(fullPath);
-            IGetterRepository<ISharedData> shareRepo = new NetworkShareRepo();
 
-            _collector = new Collector(xmlConfigRepo, shareRepo);
+            if (!File.Exists("App.config"))
+            {
+                ErrorMessageHandler(this, "App.config does not exist.");
+            }
+            else
+            {
+                try
+                {
+                    string ConfigFileName = ConfigurationManager.AppSettings["ConfigFileNames"];
+                    _assemblyPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+                    string fullPath = Path.Combine(_assemblyPath, ConfigFileName);
 
+                    InfoMessageHandler(this, $"The path of the used configuration file: {fullPath}");
+
+                    string toolNames = ConfigurationManager.AppSettings["ToolNames"];
+                    List<string> toolNameList = GetToolNamesList(toolNames);
+
+                    InfoMessageHandler(this, toolNames);
+
+                    //instantiate:
+                    IRepository<ArchiveOption> xmlConfigRepo = new XmlConfigRepo(fullPath);
+                    IGetterRepository<ISharedData> shareRepo = new NetworkShareRepo(toolNameList);
+
+                    _collector = new Collector(xmlConfigRepo, shareRepo);
+
+                    _collector?.Init();
+                }
+                catch (Exception ex)
+                {
+                    _logger?.ErrorLog($"Exception occured: {ex}", CLASS_NAME);
+
+                    ErrorMessageHandler(this, $"Exception occured: {ex.Message}");
+                }
+
+
+
+            }
         }
 
-        public List<ArchiveOptions> OptionList { get; set; }
+        private List<string> GetToolNamesList(string v)
+        {
+            return v?.Split(',').ToList() ?? new List<string>();
+        }
 
-        public List<ISharedData> ShareList { get; set; }
+        public IList<ArchiveOption> OptionList
+        {
+            get
+            {
+                return _collector.ArchiveOptionList;
+            }
+        }
+
+        public IList<ISharedData> ShareList
+        {
+            get
+            {
+                return _collector.SharedDataList;
+            }
+        }
 
 
         public List<MessageOnScreen> MessageOnScreenList { get; set; }
@@ -90,12 +131,16 @@ namespace ConfigAndLogCollectorUI
                 _collector.Init();
 
                 MessageOnScreenList = new List<MessageOnScreen>();
+
                 return IsInitialized = true;
             }
             catch (Exception ex)
             {
+                IsInitialized = false;
+
                 string message = _logger?.ErrorLog($"Exception occured: {ex.Message}", CLASS_NAME);
                 ErrorMessageHandler(this, message);
+
                 return false;
             }
             finally
@@ -105,5 +150,18 @@ namespace ConfigAndLogCollectorUI
         }
 
         #endregion
+
+
+        #region INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
+
     }
 }
