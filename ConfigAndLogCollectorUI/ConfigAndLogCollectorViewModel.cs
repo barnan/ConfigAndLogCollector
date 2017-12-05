@@ -39,25 +39,27 @@ namespace ConfigAndLogCollectorUI
                 // HACK -> anything better?
             }
 
-
             if (!File.Exists("App.config"))
             {
-                ErrorMessageHandler(this, "App.config does not exist.");
+                _logger?.InfoLog("App.config does not exist.", CLASS_NAME);
+                //ErrorMessageHandler(this, "App.config does not exist.");
             }
             else
             {
                 try
                 {
-                    string ConfigFileName = ConfigurationManager.AppSettings["ConfigFileNames"];
+                    string ConfigFileName = ConfigurationManager.AppSettings["ConfigFileName"];
                     _assemblyPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
                     string fullPath = Path.Combine(_assemblyPath, ConfigFileName);
 
-                    InfoMessageHandler(this, $"The path of the used configuration file: {fullPath}");
+                    //InfoMessageHandler(this, $"The path of the used configuration file: {fullPath}");
+                    _logger.InfoLog($"The path of the used configuration file: {fullPath}", CLASS_NAME);
 
                     string toolNames = ConfigurationManager.AppSettings["ToolNames"];
                     List<string> toolNameList = GetToolNamesList(toolNames);
 
-                    InfoMessageHandler(this, toolNames);
+                    //InfoMessageHandler(this, $"The tool names: {toolNames}");
+                    _logger.InfoLog($"The tool names: {toolNames}", CLASS_NAME);
 
                     //instantiate:
                     IRepository<ArchiveOption> xmlConfigRepo = new XmlConfigRepo(fullPath);
@@ -65,18 +67,15 @@ namespace ConfigAndLogCollectorUI
 
                     _collector = new Collector(xmlConfigRepo, shareRepo);
 
-                    _collector?.Init();
+                    Init();
                 }
                 catch (Exception ex)
                 {
                     _logger?.ErrorLog($"Exception occured: {ex}", CLASS_NAME);
-
-                    ErrorMessageHandler(this, $"Exception occured: {ex.Message}");
+                    //ErrorMessageHandler(this, $"Exception occured: {ex.Message}");
                 }
-
-
-
             }
+
         }
 
         private List<string> GetToolNamesList(string v)
@@ -139,7 +138,7 @@ namespace ConfigAndLogCollectorUI
                 IsInitialized = false;
 
                 string message = _logger?.ErrorLog($"Exception occured: {ex.Message}", CLASS_NAME);
-                ErrorMessageHandler(this, message);
+                //ErrorMessageHandler(this, message);
 
                 return false;
             }

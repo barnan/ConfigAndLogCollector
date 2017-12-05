@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ConfigAndLogCollectorUI"
+        xmlns:converters="clr-namespace:ConfigAndLogCollectorUI.Converter"
         mc:Ignorable="d"
         Title="ConfigAndLogCollectorUI" Height="500" Width="600">
 
@@ -24,24 +25,27 @@
             <Setter Property="Foreground" Value="Green"/>
         </Style>
 
+        <converters:ShareListItemConverter x:Key="ShareListItemConverter"/>
 
         <DataTemplate x:Key="ShareItemControlTemplate">
             <DockPanel>
-                <CheckBox IsChecked="{Binding IsSelected}"/>
-                <!--<TextBlock FontSize="10" >
+                <CheckBox IsChecked="{Binding IsSelected}" HorizontalAlignment="Left"/>
+                <TextBlock FontSize="10" >
                     <TextBlock.Text>
-                        <MultiBinding Converter="{StaticResource ShareNameConverter}">
+                        <MultiBinding Converter="{StaticResource ShareListItemConverter}">
                             <Binding Path="Name"/>
-                            <Binding Path="ServerName"/>
+                            <Binding Path="Net
+                                     Name"/>
                         </MultiBinding>
                     </TextBlock.Text>
-                </TextBlock>-->
+                </TextBlock>
             </DockPanel>
         </DataTemplate>
 
-        <DataTemplate x:Key="ArchiveOptionControlTemplate">
+        <!--<DataTemplate x:Key="ArchiveOptionControlTemplate">
             <DockPanel>
-                <CheckBox IsChecked="{Binding IsSelected}"/>
+                <CheckBox IsChecked="{Binding IsSelected}" HorizontalAlignment="Left"/>
+                <TextBlock FontSize="10" Text="{Binding Name}"/>
             </DockPanel>
         </DataTemplate>
 
@@ -49,7 +53,7 @@
             <DockPanel>
                 <CheckBox IsChecked="{Binding IsSelected}"/>
             </DockPanel>
-        </DataTemplate>
+        </DataTemplate>-->
 
 
 
@@ -102,17 +106,17 @@
                    Style="{StaticResource TextBlockStyle1}" 
                    Text="Save options" TextWrapping="Wrap"
                    HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <ListBox Grid.Row="1" Grid.Column="1" 
+            <!--<ListBox Grid.Row="1" Grid.Column="1" 
                  MinHeight="100" 
                  Style="{StaticResource ListBoxStyle1}"
                  ItemsSource="{Binding OptionList}"
-                 ItemTemplate="{StaticResource ArchiveOptionControlTemplate}"/>
+                 ItemTemplate="{StaticResource ArchiveOptionControlTemplate}"/>-->
 
 
 
             <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
             <!-- Extension selector (read from file) -->
-            <TextBlock Grid.Row="2" Grid.Column="0" 
+            <!--<TextBlock Grid.Row="2" Grid.Column="0" 
                    Style="{StaticResource TextBlockStyle1}" 
                    Text="Extensions" TextWrapping="Wrap"
                    HorizontalAlignment="Left" VerticalAlignment="Center"/>
@@ -120,7 +124,7 @@
                   MinHeight="100" 
                   Style="{StaticResource ListBoxStyle1}"
                   ItemsSource="{Binding ExtensionList}"
-                  ItemTemplate="{StaticResource ExtensionListControlTemplate}"/>
+                  ItemTemplate="{StaticResource ExtensionListControlTemplate}"/>-->
 
 
             <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->

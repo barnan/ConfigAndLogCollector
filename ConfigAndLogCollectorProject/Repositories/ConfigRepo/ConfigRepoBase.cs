@@ -17,7 +17,7 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
         protected object _ownLock = new object();
 
 
-        private ArchiveConfigs _archiveOptions { get; set; }
+        protected ArchiveConfigs ArchiveOptions { get; set; }
 
 
         public ConfigRepoBase()
@@ -38,7 +38,7 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
 
                 Logger?.InfoLog($"{element} is deleted from _archiveOptions.", CLASS_NAME);
 
-                return _archiveOptions?.OptionList?.Remove(element) ?? false;
+                return ArchiveOptions?.OptionList?.Remove(element) ?? false;
             }
         }
 
@@ -52,13 +52,13 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
                     throw new Exception(Logger?.InfoLog($"Not initialized yet.", CLASS_NAME));
                 }
 
-                if (id > _archiveOptions?.OptionList?.Count)
+                if (id > ArchiveOptions?.OptionList?.Count)
                 {
                     Logger?.Info("The required index is higher, than number of available options.");
                     return null;
                 }
 
-                return _archiveOptions.OptionList[id];
+                return ArchiveOptions.OptionList[id];
             }
         }
 
@@ -67,7 +67,7 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
         {
             lock (_ownLock)
             {
-                return _archiveOptions?.OptionList;
+                return ArchiveOptions?.OptionList;
             }
         }
 

@@ -7,7 +7,7 @@ namespace Interfaces
 
     public interface ISharedData : INamedElement
     {
-        string ServerName { get; }
+        string NetName { get; }
         bool IsSelected { get; set; }
         IList<SharedFile> FileList { get; }
     }

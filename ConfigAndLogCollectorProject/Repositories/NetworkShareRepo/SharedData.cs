@@ -8,8 +8,8 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
 
     public class SharedData : ISharedData
     {
-        public string Name { get; set; }
-        public string ServerName { get; set; }
+        public string Name { get; private set; }
+        public string NetName { get; set; }
         public bool IsSelected { get; set; }
         IList<SharedFile> _fileList;
 
@@ -17,7 +17,7 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
         public SharedData(string name, string serverName, bool isSelected)
         {
             Name = name;
-            ServerName = serverName;
+            NetName = serverName;
             IsSelected = isSelected;
             _fileList = new List<SharedFile>();
         }

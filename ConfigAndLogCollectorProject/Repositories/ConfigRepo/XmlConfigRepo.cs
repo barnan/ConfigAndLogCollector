@@ -13,8 +13,6 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
         private string FilePath { get; set; }
         private object _fileLock = new object();
 
-        private ArchiveConfigs _archiveOptions { get; set; }
-
 
         public XmlConfigRepo(string path)
             : base()
@@ -45,11 +43,11 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
                     throw new Exception(Logger?.InfoLog($"Not initialized yet.", CLASS_NAME));
                 }
 
-                _archiveOptions.OptionList.Add(element);
+                ArchiveOptions.OptionList.Add(element);
 
                 lock (_fileLock)
                 {
-                    ArchiveConfigs.WriteToFile(FilePath, _archiveOptions);
+                    ArchiveConfigs.WriteToFile(FilePath, ArchiveOptions);
                 }
 
                 return true;
@@ -77,9 +75,9 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
                 {
                     Logger?.InfoLog("The given xml file does not exists.", CLASS_NAME);
 
-                    _archiveOptions = new ArchiveConfigs(new List<ArchiveOption> { new ArchiveOption("AllConfig", new List<ArchPath> { new ArchPath("*.config", true, 10) }) });
+                    ArchiveOptions = new ArchiveConfigs(new List<ArchiveOption> { new ArchiveOption("AllConfig", new List<ArchPath> { new ArchPath("*.config", true, 10) }) });
 
-                    _archiveOptions.Serialize(FilePath);
+                    ArchiveOptions.Serialize(FilePath);
 
                     return IsInitialized = true;
                 }
@@ -93,7 +91,7 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
 
                     lock (_fileLock)
                     {
-                        _archiveOptions = ArchiveConfigs.ReadFromFile(FilePath);
+                        ArchiveOptions = ArchiveConfigs.ReadFromFile(FilePath);
                     }
                 }
 

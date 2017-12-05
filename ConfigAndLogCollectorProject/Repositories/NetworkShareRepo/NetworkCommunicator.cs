@@ -53,13 +53,13 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
             // using the solution from code-project (Richard Deeming)
             // https://www.codeproject.com/Articles/2939/Network-Shares-and-UNC-paths 
 
-            List<ISharedData> sharedFileList = new List<ISharedData>();
+            List<ISharedData> sharedDataList = new List<ISharedData>();
 
             List<string> pcList = GetComputersListOnNetwork();
             if (pcList.Count == 0)
             {
                 Logger?.Info("The arrived computerlist is empty.", CLASS_NAME);
-                return sharedFileList;
+                return sharedDataList;
             }
 
             try
@@ -88,7 +88,7 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
                                     filesOfOneShare.Add(new SharedFile() { Path = Flds[i].FullName, IsSelected = false });
                                 }
 
-                                sharedFileList.Add(filesOfOneShare);
+                                sharedDataList.Add(filesOfOneShare);
                             }
 
                         }
@@ -105,7 +105,7 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
                 Logger?.ErrorLog($"Exception occured: {ex}", CLASS_NAME);
             }
 
-            return sharedFileList;
+            return sharedDataList;
         }
 
     }
