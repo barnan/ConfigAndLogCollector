@@ -111,6 +111,12 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
         }
 
 
+        public override void Close()
+        {
+            throw new NotImplementedException();
+        }
+
+
         private bool CheckFilePath()
         {
             lock (_fileLock)

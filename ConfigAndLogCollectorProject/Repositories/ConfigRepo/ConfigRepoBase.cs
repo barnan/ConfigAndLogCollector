@@ -92,6 +92,8 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
 
         public abstract bool Init();
 
+        public abstract void Close();
+
 
         #endregion
 

@@ -11,13 +11,10 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace ConfigAndLogCollectorUI
 {
-
 
     public class ConfigAndLogCollectorViewModel : IInitializable, INotifyPropertyChanged
     {
@@ -131,6 +128,8 @@ namespace ConfigAndLogCollectorUI
 
                 MessageOnScreenList = new List<MessageOnScreen>();
 
+                _logger?.InfoLog("Initialized.", CLASS_NAME);
+
                 return IsInitialized = true;
             }
             catch (Exception ex)
@@ -144,6 +143,31 @@ namespace ConfigAndLogCollectorUI
             }
             finally
             {
+                Monitor.Exit(_ownLock);
+            }
+        }
+
+        public void Close()
+        {
+            try
+            {
+                Monitor.Enter(_ownLock);
+
+                _collector.Error -= ErrorMessageHandler;
+                _collector.Info -= InfoMessageHandler;
+
+                _collector.Close();
+
+                _logger?.InfoLog("Closed.", CLASS_NAME);
+            }
+            catch (Exception ex)
+            {
+                string message = _logger?.ErrorLog($"Exception occured: {ex.Message}", CLASS_NAME);
+                //ErrorMessageHandler(this, message);
+            }
+            finally
+            {
+                IsInitialized = false;
                 Monitor.Exit(_ownLock);
             }
         }

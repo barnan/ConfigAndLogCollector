@@ -66,6 +66,32 @@ namespace ConfigAndLogCollectorProject
         }
 
 
+        public void Close()
+        {
+            try
+            {
+                Monitor.Enter(_ownLock);
+
+                _archiveOptionRepository?.Close();
+                _shareRepository?.Close();
+
+                Logger?.InfoLog("Closed.", CLASS_NAME);
+            }
+            catch (Exception ex)
+            {
+                IsInitialized = false;
+
+                string message = Logger?.ErrorLog($"Exception occured: {ex.Message}", CLASS_NAME);
+                OnError(this, message);
+            }
+            finally
+            {
+                IsInitialized = false;
+                Monitor.Exit(_ownLock);
+            }
+        }
+
+
         public bool IsInitialized { get; private set; }
 
         #endregion
@@ -138,6 +164,7 @@ namespace ConfigAndLogCollectorProject
         {
             Info?.Invoke(sender, message);
         }
+
 
         #endregion
 

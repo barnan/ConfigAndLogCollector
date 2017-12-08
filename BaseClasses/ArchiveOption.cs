@@ -5,7 +5,6 @@ using System.Xml.Serialization;
 namespace BaseClasses
 {
 
-
     [XmlType("ArchiveOption")]
     public class ArchiveOption
     {
@@ -14,6 +13,10 @@ namespace BaseClasses
 
         [XmlArray("ArchivePathList"), XmlArrayItem(typeof(ArchPath), ElementName = "ArchPath")]
         public List<ArchPath> ArchivePathList { get; set; }
+
+        [XmlIgnore]
+        public bool IsSelected { get; set; }
+
 
         public ArchiveOption()
         {

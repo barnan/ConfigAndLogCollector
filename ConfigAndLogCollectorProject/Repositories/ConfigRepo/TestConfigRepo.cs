@@ -37,11 +37,16 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
             return IsInitialized = true;
         }
 
+        public override void Close()
+        {
+        }
+
 
         public override bool Save(ArchiveOption element)
         {
             return true;
         }
+
 
     }
 }

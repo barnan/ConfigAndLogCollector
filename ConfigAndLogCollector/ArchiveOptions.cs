@@ -10,7 +10,7 @@ using NLog;
 
 namespace ConfigAndLogCollector
 {
-    
+
     [Serializable]
     public class ArchiveOptions
     {
@@ -51,11 +51,11 @@ namespace ConfigAndLogCollector
             }
 
         }
-        
+
 
         private static void SerializeParameters(string filename, ArchiveOptions appconf)
         {
-            
+
             try
             {
                 using (TextWriter tw = new StreamWriter(filename))
@@ -103,12 +103,12 @@ namespace ConfigAndLogCollector
                 {
                     _logger.Error("ArchiveOptions was not existing, a new file was tried to create -> Error during CreateDirectory: {0}", ex.Message);
                 }
-                
+
                 WriteParameters(configFilePath, aop);
 
                 return aop;
             }
-            
+
             return DeserializeParameters(configFilePath);
         }
 
@@ -134,7 +134,7 @@ namespace ConfigAndLogCollector
         }
         #endregion
     }
-    
+
 
     public class ArchOption
     {
@@ -154,7 +154,7 @@ namespace ConfigAndLogCollector
             get { return _isSelected; }
             set { _isSelected = value; }
         }
-        
+
 
         private List<ArchPath> _fileDirList;
         public List<ArchPath> FileDirList
@@ -228,7 +228,7 @@ namespace ConfigAndLogCollector
             get { return _path; }
             set { _path = value; }
         }
-        
+
         private bool _recursiveDir;
         public bool RecursiveDir
         {
@@ -250,5 +250,5 @@ namespace ConfigAndLogCollector
         #endregion
 
     }
-    
+
 }

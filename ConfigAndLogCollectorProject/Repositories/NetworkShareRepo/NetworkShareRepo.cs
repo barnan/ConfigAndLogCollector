@@ -107,6 +107,17 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
 
         }
 
+        public void Close()
+        {
+            lock (_ownLock)
+            {
+                Logger?.InfoLog("Closed.", CLASS_NAME);
+
+                IsInitialized = false;
+            }
+
+        }
+
         #endregion
 
     }
