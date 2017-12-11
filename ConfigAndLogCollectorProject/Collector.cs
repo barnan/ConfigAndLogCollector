@@ -3,11 +3,13 @@ using Interfaces;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace ConfigAndLogCollectorProject
 {
-    public class Collector : ICollector
+    public class Collector : ICollector, INotifyPropertyChanged
     {
 
         private IRepository<ArchiveOption> _archiveOptionRepository;
@@ -153,5 +155,12 @@ namespace ConfigAndLogCollectorProject
 
         #endregion
 
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

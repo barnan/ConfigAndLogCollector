@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Xml.Serialization;
 
 namespace BaseClasses
 {
 
     [XmlType("ArchiveOption")]
-    public class ArchiveOption
+    public class ArchiveOption : INotifyPropertyChanged
     {
         [XmlElement(nameof(Name))]
         public string Name { get; set; }
@@ -15,7 +17,19 @@ namespace BaseClasses
         public List<ArchPath> ArchivePathList { get; set; }
 
         [XmlIgnore]
-        public bool IsSelected { get; set; }
+        private bool _isSelected;
+
+        [XmlIgnore]
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                _isSelected = value;
+                OnPropertyChanged();
+            }
+
+        }
 
 
         public ArchiveOption()
@@ -36,6 +50,14 @@ namespace BaseClasses
         public override string ToString()
         {
             return $"ArchiveOption: {Name}";
+        }
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
     }
@@ -83,6 +105,5 @@ namespace BaseClasses
             IsRecursive = isrecursive;
         }
     }
-
 
 }

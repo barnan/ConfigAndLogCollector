@@ -65,6 +65,9 @@ namespace ConfigAndLogCollectorUI
                     _collector = new Collector(xmlConfigRepo, shareRepo);
 
                     Init();
+
+                    ResetExtensionList(this, null);
+                    SubscribeToListNotification();
                 }
                 catch (Exception ex)
                 {
@@ -82,23 +85,20 @@ namespace ConfigAndLogCollectorUI
 
         public IList<ArchiveOption> OptionList
         {
-            get
-            {
-                return _collector.ArchiveOptionList;
-            }
+            get { return _collector.ArchiveOptionList; }
             set
             {
                 _collector.ArchiveOptionList = value;
+
+                SubscribeToListNotification();
+
                 OnPropertyChanged();
             }
         }
 
         public IList<ISharedData> ShareList
         {
-            get
-            {
-                return _collector.SharedDataList;
-            }
+            get { return _collector.SharedDataList; }
             set
             {
                 _collector.SharedDataList = value;
@@ -107,55 +107,86 @@ namespace ConfigAndLogCollectorUI
         }
 
 
+        private IList<ArchPath> _extensionList;
+
         public IList<ArchPath> ExtensionList
         {
-            get
-            {
-                List<ArchPath> resuList = new List<ArchPath>();
-
-                foreach (ArchiveOption aopt in OptionList)
-                {
-                    if (aopt == null)
-                    {
-                        break;
-                    }
-
-                    if (!aopt.IsSelected)
-                    {
-                        continue;
-                    }
-
-
-                    foreach (ArchPath p in aopt.ArchivePathList)
-                    {
-                        resuList.Add(p);
-                    }
-                }
-
-                return resuList;
-            }
+            get { return _extensionList; }
             set
             {
-                foreach (ArchPath p in value)
-                {
-                    
-                }
-
+                _extensionList = value;
+                OnPropertyChanged();
             }
         }
+
+
+        private void ResetExtensionList(object obj, PropertyChangedEventArgs args)
+        {
+            _extensionList = new List<ArchPath>();
+
+            foreach (ArchiveOption aopt in OptionList)
+            {
+                if (aopt == null)
+                {
+                    break;
+                }
+
+                if (!aopt.IsSelected)
+                {
+                    continue;
+                }
+
+                foreach (ArchPath p in aopt.ArchivePathList)
+                {
+                    _extensionList.Add(p);
+                }
+            }
+            OnPropertyChanged("ExtensionList");
+        }
+
+
+        private void SubscribeToListNotification()
+        {
+            foreach (ArchiveOption aopt in OptionList)
+            {
+                if (aopt == null)
+                {
+                    break;
+                }
+
+                aopt.PropertyChanged -= ResetExtensionList;
+                aopt.PropertyChanged += ResetExtensionList;
+            }
+        }
+
 
 
         public List<MessageOnScreen> MessageOnScreenList { get; set; }
 
         public void InfoMessageHandler(object sender, string message)
         {
-            MessageOnScreenList.Add(new MessageOnScreen(MessageType.Info, message));
+            try
+            {
+                MessageOnScreenList.Add(new MessageOnScreen(MessageType.Info, message));
+            }
+            catch (Exception ex)
+            {
+                _logger?.ErrorLog($"Error: {ex.Message}", CLASS_NAME);
+            }
         }
 
 
         public void ErrorMessageHandler(object sender, string message)
         {
-            MessageOnScreenList.Add(new MessageOnScreen(MessageType.Error, message));
+            try
+            {
+                MessageOnScreenList.Add(new MessageOnScreen(MessageType.Error, message));
+            }
+            catch (Exception ex)
+            {
+                _logger?.ErrorLog($"Error: {ex.Message}",CLASS_NAME);
+            }
+            
         }
 
 
@@ -170,7 +201,7 @@ namespace ConfigAndLogCollectorUI
                 Monitor.Enter(_ownLock);
 
                 MessageOnScreenList = new List<MessageOnScreen>();
-                
+
                 _collector.Error += ErrorMessageHandler;
                 _collector.Info += InfoMessageHandler;
 
@@ -185,7 +216,7 @@ namespace ConfigAndLogCollectorUI
                 IsInitialized = false;
 
                 string message = _logger?.ErrorLog($"Exception occured: {ex.Message}", CLASS_NAME);
-                //ErrorMessageHandler(this, message);
+                ErrorMessageHandler(this, message);
 
                 return false;
             }

@@ -29,7 +29,9 @@ namespace ConfigAndLogCollectorUI.Converter
                 return Binding.DoNothing;
             }
 
-            return $"{dayNumber} | {path}";
+            string placeholder = dayNumber < 10 ? " " : string.Empty;
+
+            return $"{dayNumber}{} | {path}";
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
