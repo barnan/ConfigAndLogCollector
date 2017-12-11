@@ -10,12 +10,11 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
 
     public class XmlConfigRepo : ConfigRepoBase
     {
-        private string FilePath { get; set; }
-        private object _fileLock = new object();
+        private string FilePath { get; }
+        private readonly object _fileLock = new object();
 
 
         public XmlConfigRepo(string path)
-            : base()
         {
             CLASS_NAME = nameof(XmlConfigRepo);
             Name = nameof(XmlConfigRepo);
@@ -40,7 +39,7 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
             {
                 if (!IsInitialized)
                 {
-                    throw new Exception(Logger?.InfoLog($"Not initialized yet.", CLASS_NAME));
+                    throw new Exception(Logger?.InfoLog("Not initialized yet.", CLASS_NAME));
                 }
 
                 ArchiveOptions.OptionList.Add(element);
@@ -125,10 +124,8 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
                 {
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
+
+                return false;
             }
         }
 

@@ -3,9 +3,6 @@ using Interfaces;
 using NLog;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
 {
@@ -14,15 +11,10 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
 
         protected ILogger Logger { get; set; }
         protected string CLASS_NAME;
-        protected object _ownLock = new object();
+        protected readonly object _ownLock = new object();
 
 
         protected ArchiveConfigs ArchiveOptions { get; set; }
-
-
-        public ConfigRepoBase()
-        {
-        }
 
 
         #region IRepository
@@ -52,7 +44,7 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
                     throw new Exception(Logger?.InfoLog($"Not initialized yet.", CLASS_NAME));
                 }
 
-                if (id > ArchiveOptions?.OptionList?.Count)
+                if (id > (ArchiveOptions?.OptionList?.Count ?? -1))
                 {
                     Logger?.Info("The required index is higher, than number of available options.");
                     return null;

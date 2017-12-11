@@ -12,10 +12,10 @@ namespace ConfigAndLogCollectorProject
 
         private IRepository<ArchiveOption> _archiveOptionRepository;
         private IGetterRepository<ISharedData> _shareRepository;
-        private object _ownLock = new object();
+        private readonly object _ownLock = new object();
         private const string CLASS_NAME = nameof(Collector);
 
-        ILogger Logger { get; set; }
+        ILogger Logger { get; }
 
 
         public Collector(IRepository<ArchiveOption> aOption, IGetterRepository<ISharedData> shareDat)

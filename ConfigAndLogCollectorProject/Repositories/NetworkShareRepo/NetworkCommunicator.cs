@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.DirectoryServices;
 using NLog;
 using System.IO;
 using BaseClasses;
@@ -26,22 +27,36 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
         {
             List<string> pcList = new List<string>();
 
-            try
-            {
-                // using the solution from Code-project (Sacha Barber):
-                // https://www.codeproject.com/articles/16113/retreiving-a-list-of-network-computer-names-using
+            //try
+            //{
+            //    // using the solution from Code-project (Sacha Barber):
+            //    // https://www.codeproject.com/articles/16113/retreiving-a-list-of-network-computer-names-using
 
-                NetworkBrowser nb = new NetworkBrowser();
-                foreach (string pc in nb.getNetworkComputers())
+            //    NetworkBrowser nb = new NetworkBrowser();
+            //    foreach (string pc in nb.getNetworkComputers())
+            //    {
+            //        pcList.Add(pc);
+            //    }
+
+            //}
+            //catch (Exception ex)
+            //{
+            //    Logger?.ErrorLog($"Exception occured: {ex}", CLASS_NAME);
+            //}
+
+            DirectoryEntry root = new DirectoryEntry("WinNT:");
+            foreach (DirectoryEntry computers in root.Children)
+            {
+                foreach (DirectoryEntry computer in computers.Children)
                 {
-                    pcList.Add(pc);
+                    if (computer.Name != "Schema")
+                    {
+                        //textBox1.Text += computer.Name + "\r\n";
+                        pcList.Add((computer.Name));
+                    }
                 }
+            }
 
-            }
-            catch (Exception ex)
-            {
-                Logger?.ErrorLog($"Exception occured: {ex}", CLASS_NAME);
-            }
 
             return pcList;
         }
@@ -58,7 +73,7 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
             List<string> pcList = GetComputersListOnNetwork();
             if (pcList.Count == 0)
             {
-                Logger?.Info("The arrived computerlist is empty.", CLASS_NAME);
+                Logger?.InfoLog("The arrived computerlist is empty.", CLASS_NAME);
                 return sharedDataList;
             }
 
@@ -81,11 +96,11 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
                                 SharedData filesOfOneShare = new SharedData(sh.NetName, pcName, false);
 
                                 DirectoryInfo dirInfo = sh.Root;
-                                FileInfo[] Flds = dirInfo.GetFiles("*", SearchOption.AllDirectories);
+                                FileInfo[] flds = dirInfo.GetFiles("*", SearchOption.AllDirectories);
 
-                                for (int i = 0; i < Flds.Length; i++)
+                                for (int i = 0; i < flds.Length; i++)
                                 {
-                                    filesOfOneShare.Add(new SharedFile() { Path = Flds[i].FullName, IsSelected = false });
+                                    filesOfOneShare.Add(new SharedFile() { Path = flds[i].FullName, IsSelected = false });
                                 }
 
                                 sharedDataList.Add(filesOfOneShare);

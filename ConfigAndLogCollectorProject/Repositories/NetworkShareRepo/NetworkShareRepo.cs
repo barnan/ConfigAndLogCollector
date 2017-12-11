@@ -10,18 +10,20 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
 
     public class NetworkShareRepo : IGetterRepository<ISharedData>, IInitializable
     {
-        public bool IsInitialized { get; set; }
-        private ILogger Logger { get; set; }
-        private object _ownLock = new object();
+        
+        private readonly object _ownLock = new object();
         private const string CLASS_NAME = nameof(NetworkShareRepo);
-        private NetworkCommunicator _nc;
-        private IList<ISharedData> _shareList;
-        private List<string> _toolNameList;
+        private readonly NetworkCommunicator _nc;
+        private IList<ISharedData> ShareList { get; set; }
+        private List<string> ToolNameList { get; }
+        public bool IsInitialized { get; set; }
+        private ILogger Logger { get; }
+
 
 
         public NetworkShareRepo(List<string> toolNameList)
         {
-            _toolNameList = toolNameList;
+            ToolNameList = toolNameList;
 
             try
             {
@@ -47,12 +49,12 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
                     throw new Exception(Logger?.InfoLog($"Not initialized yet.", CLASS_NAME));
                 }
 
-                if (id > _shareList?.Count)
+                if (id > (ShareList?.Count ?? -1) )
                 {
                     throw new IndexOutOfRangeException(Logger?.InfoLog("The required index is higher, than number of available options.", CLASS_NAME));
                 }
 
-                return _shareList[id];
+                return ShareList[id];
             }
         }
 
@@ -62,11 +64,11 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
             {
                 if (!IsInitialized)
                 {
-                    string message = Logger?.InfoLog($"Not initialized yet.", CLASS_NAME);
+                    string message = Logger?.InfoLog("Not initialized yet.", CLASS_NAME);
                     throw new Exception(message);
                 }
 
-                return _shareList;
+                return ShareList;
             }
         }
 
@@ -86,15 +88,15 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
                     return IsInitialized;
                 }
 
-                if ((_toolNameList?.Count ?? 0) == 0)
+                if ((ToolNameList?.Count ?? 0) == 0)
                 {
-                    string message = Logger?.InfoLog("The parameter ToolNameList has zero elements.", CLASS_NAME);
+                    string message = Logger?.InfoLog("The parameter ToolNameList has zero elements or it is null.", CLASS_NAME);
                     throw new Exception(message);
                 }
 
-                _shareList = _nc.GetFileListOfShares(_toolNameList);
+                ShareList = _nc.GetFileListOfShares(ToolNameList);
 
-                if (_shareList.Count == 0)
+                if (ShareList.Count == 0)
                 {
                     string message = Logger?.InfoLog("The arrived share list has zero elements.", CLASS_NAME);
                     throw new Exception(message);
