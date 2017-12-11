@@ -38,33 +38,53 @@ namespace ConfigAndLogCollectorProject
 
         public bool Init()
         {
-            try
+            lock (_ownLock)
             {
-                Monitor.Enter(_ownLock);
-
-                if ((!_archiveOptionRepository?.Init() ?? false) || (!_shareRepository?.Init() ?? false))
+                try
                 {
-                    Logger?.InfoLog("Repositories could not be initialized.", CLASS_NAME);
-                    return false;
+                    bool initrepo1 = _archiveOptionRepository?.Init() ?? false;
+                    if (!initrepo1)
+                    {
+                        Logger?.InfoLog("Archive option could not be initialized.", CLASS_NAME);
+                        IsInitialized = false;
+                    }
+                    else
+                    {
+                        ArchiveOptionList = _archiveOptionRepository.GetAll();
+                        IsInitialized = true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    IsInitialized = false;
+                    string message = Logger?.ErrorLog($"Exception occured: {ex.Message}", CLASS_NAME);
+                    OnError(this, message);
                 }
 
-                SharedDataList = _shareRepository.GetAll();
-                ArchiveOptionList = _archiveOptionRepository.GetAll();
+                try
+                {
+                    bool initrepo2 = _shareRepository?.Init() ?? false;
+                    if (!initrepo2)
+                    {
+                        Logger?.InfoLog("Share repository could not be initialized.", CLASS_NAME);
+                        IsInitialized &= false;
+                    }
+                    else
+                    {
 
-                return IsInitialized = true;
-            }
-            catch (Exception ex)
-            {
-                IsInitialized = false;
+                        SharedDataList = _shareRepository.GetAll();
+                        IsInitialized &= true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    IsInitialized &= false;
 
-                string message = Logger?.ErrorLog($"Exception occured: {ex.Message}", CLASS_NAME);
-                OnError(this, message);
+                    string message = Logger?.ErrorLog($"Exception occured: {ex.Message}", CLASS_NAME);
+                    OnError(this, message);
+                }
 
-                return false;
-            }
-            finally
-            {
-                Monitor.Exit(_ownLock);
+                return IsInitialized;
             }
         }
 

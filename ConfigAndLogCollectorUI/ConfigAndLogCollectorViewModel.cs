@@ -142,12 +142,12 @@ namespace ConfigAndLogCollectorUI
             {
                 Monitor.Enter(_ownLock);
 
+                MessageOnScreenList = new List<MessageOnScreen>();
+                
                 _collector.Error += ErrorMessageHandler;
                 _collector.Info += InfoMessageHandler;
 
                 _collector.Init();
-
-                MessageOnScreenList = new List<MessageOnScreen>();
 
                 _logger?.InfoLog("Initialized.", CLASS_NAME);
 

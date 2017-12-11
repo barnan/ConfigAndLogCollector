@@ -33,6 +33,7 @@
 
         <converters:ShareListItemConverter x:Key="ShareListItemConverter"/>
         <converters:OptionListItemConverter x:Key="OptionListItemConverter"/>
+        <converters:MessageOnScreenListConverter x:Key="MessageOnScreenListConverter"/>
 
         <DataTemplate x:Key="ShareItemControlTemplate">
             <DockPanel>
@@ -147,6 +148,9 @@
                         <DataGridTextColumn Header="Message" Binding="{Binding Message}"/>
                     </DataGrid>
                 </GroupBox>-->
+
+                <TextBlock Style="{StaticResource CommonStyle}"  Text="{Binding MessageOnScreenList, Converter={StaticResource MessageOnScreenListConverter}}"/>
+                    
 
                 <Ellipse Grid.Column="2" Grid.Row="4" 
                      Fill="Gray" Stroke="Black" Style="{StaticResource CommonStyle}"

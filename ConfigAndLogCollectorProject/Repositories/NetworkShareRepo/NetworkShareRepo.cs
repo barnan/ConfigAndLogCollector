@@ -90,6 +90,7 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
 
                 if ((ToolNameList?.Count ?? 0) == 0)
                 {
+                    IsInitialized = false;
                     string message = Logger?.InfoLog("The parameter ToolNameList has zero elements or it is null.", CLASS_NAME);
                     throw new Exception(message);
                 }
@@ -98,12 +99,13 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
 
                 if (ShareList.Count == 0)
                 {
+                    IsInitialized = false;
                     string message = Logger?.InfoLog("The arrived share list has zero elements.", CLASS_NAME);
                     throw new Exception(message);
+
                 }
 
                 Logger?.InfoLog("Initialized.", CLASS_NAME);
-
                 return IsInitialized = true;
             }
 
