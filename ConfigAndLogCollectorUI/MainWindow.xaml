@@ -34,6 +34,7 @@
         <converters:ShareListItemConverter x:Key="ShareListItemConverter"/>
         <converters:OptionListItemConverter x:Key="OptionListItemConverter"/>
         <converters:MessageOnScreenListConverter x:Key="MessageOnScreenListConverter"/>
+        <converters:ExtensionListItemConverter x:Key="ExtensionListItemConverter"/>
 
         <DataTemplate x:Key="ShareItemControlTemplate">
             <DockPanel>
@@ -66,6 +67,14 @@
         <DataTemplate x:Key="ExtensionListControlTemplate">
             <DockPanel>
                 <CheckBox IsChecked="{Binding IsSelected}"/>
+                <TextBlock Style="{StaticResource TextInListBoxStyle1}">
+                    <TextBlock.Text>
+                        <MultiBinding Converter="{StaticResource ExtensionListItemConverter}">
+                            <Binding Path="Path"/>
+                            <Binding Path="NumberOfDays"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
             </DockPanel>
         </DataTemplate>
 
@@ -135,7 +144,7 @@
             <ListBox  Grid.Row="3" Grid.Column="0" 
                   MinHeight="100" 
                   Style="{StaticResource ListBoxStyle1}"
-                  ItemsSource="{Binding OptionList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                  ItemsSource="{Binding ExtensionList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                   ItemTemplate="{StaticResource ExtensionListControlTemplate}"/>
 
 

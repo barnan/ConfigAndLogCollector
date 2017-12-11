@@ -22,6 +22,7 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
         public override bool Init()
         {
             ArchiveOption aOpt1 = new ArchiveOption("AOption1", new List<ArchPath> { new ArchPath("*.*", true, 10) });
+            aOpt1.IsSelected = true;
             ArchiveOption aOpt2 = new ArchiveOption("AOption2", new List<ArchPath> { new ArchPath("*.xml", true, 5), new ArchPath("*.config", true, 5) });
             ArchiveOption aOpt3 = new ArchiveOption("AOption3", new List<ArchPath> { new ArchPath("*.config", false, 5), new ArchPath("*.txt", false, 10) });
 

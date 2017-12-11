@@ -89,6 +89,7 @@ namespace ConfigAndLogCollectorUI
             set
             {
                 _collector.ArchiveOptionList = value;
+                OnPropertyChanged();
             }
         }
 
@@ -101,19 +102,45 @@ namespace ConfigAndLogCollectorUI
             set
             {
                 _collector.SharedDataList = value;
+                OnPropertyChanged();
             }
         }
 
 
-        public IList<ISharedData> ExtensionList
+        public IList<ArchPath> ExtensionList
         {
             get
             {
-                return _collector.SharedDataList;
+                List<ArchPath> resuList = new List<ArchPath>();
+
+                foreach (ArchiveOption aopt in OptionList)
+                {
+                    if (aopt == null)
+                    {
+                        break;
+                    }
+
+                    if (!aopt.IsSelected)
+                    {
+                        continue;
+                    }
+
+
+                    foreach (ArchPath p in aopt.ArchivePathList)
+                    {
+                        resuList.Add(p);
+                    }
+                }
+
+                return resuList;
             }
             set
             {
-                _collector.SharedDataList = value;
+                foreach (ArchPath p in value)
+                {
+                    
+                }
+
             }
         }
 

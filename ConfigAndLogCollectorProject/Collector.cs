@@ -128,26 +128,6 @@ namespace ConfigAndLogCollectorProject
         public IList<ArchiveOption> ArchiveOptionList
         {
             get;
-            //{
-            //    try
-            //    {
-            //        if (!IsInitialized)
-            //        {
-            //            string message = Logger?.InfoLog("Archiveoptions were asked, but it is not initialized yet.", CLASS_NAME);
-            //            OnInfo(this, message);
-            //            return null;
-            //        }
-
-            //        return _archiveOptionRepository.GetAll();
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        string message = Logger?.ErrorLog($"Exception occured: {ex.Message}", CLASS_NAME);
-            //        OnError(this, message);
-            //        return null;
-            //    }
-
-            //}
             set;
         }
 
@@ -155,26 +135,6 @@ namespace ConfigAndLogCollectorProject
         public IList<ISharedData> SharedDataList
         {
             get;
-            //{
-            //try
-            //{
-            //    if (!IsInitialized)
-            //    {
-            //        string message = Logger?.InfoLog("Share data list were asked, but it is not initialized yet.", CLASS_NAME);
-            //        OnInfo(this, message);
-            //        return null;
-            //    }
-
-            //    return _shareRepository.GetAll();
-            //}
-            //catch (Exception ex)
-            //{
-            //    string message = Logger?.ErrorLog($"Exception occured: {ex.Message}", CLASS_NAME);
-            //    OnError(this, message);
-            //    return null;
-            //}
-
-            //}
             set;
         }
 
