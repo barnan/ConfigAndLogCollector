@@ -31,7 +31,7 @@ namespace ConfigAndLogCollectorUI.Converter
 
             string placeholder = dayNumber < 10 ? " " : string.Empty;
 
-            return $"{dayNumber}{} | {path}";
+            return $"{dayNumber}{placeholder} | {path}";
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
