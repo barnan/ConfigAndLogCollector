@@ -69,7 +69,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Command\RelayCommand.cs" />
     <Compile Include="ConfigAndLogCollectorViewModel.cs" />
+    <Compile Include="Converter\ExtensionListItemConverter.cs" />
+    <Compile Include="Converter\OptionListItemConverter.cs" />
     <Compile Include="Converter\ShareListItemConverter.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

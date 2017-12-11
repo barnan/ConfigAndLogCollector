@@ -59,7 +59,7 @@ namespace ConfigAndLogCollectorUI
                     _logger.InfoLog($"The tool names: {toolNames}", CLASS_NAME);
 
                     //instantiate:
-                    IRepository<ArchiveOption> xmlConfigRepo = new XmlConfigRepo(fullPath);
+                    IRepository<ArchiveOption> xmlConfigRepo = new TestConfigRepo(); //new XmlConfigRepo(fullPath);
                     IGetterRepository<ISharedData> shareRepo = new NetworkShareRepo(toolNameList);
 
                     _collector = new Collector(xmlConfigRepo, shareRepo);
@@ -86,6 +86,10 @@ namespace ConfigAndLogCollectorUI
             {
                 return _collector.ArchiveOptionList;
             }
+            set
+            {
+                _collector.ArchiveOptionList = value;
+            }
         }
 
         public IList<ISharedData> ShareList
@@ -93,6 +97,23 @@ namespace ConfigAndLogCollectorUI
             get
             {
                 return _collector.SharedDataList;
+            }
+            set
+            {
+                _collector.SharedDataList = value;
+            }
+        }
+
+
+        public IList<ISharedData> ExtensionList
+        {
+            get
+            {
+                return _collector.SharedDataList;
+            }
+            set
+            {
+                _collector.SharedDataList = value;
             }
         }
 

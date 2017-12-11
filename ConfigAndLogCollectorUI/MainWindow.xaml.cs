@@ -20,13 +20,19 @@ namespace ConfigAndLogCollectorUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        ConfigAndLogCollectorViewModel vm;
+
         public MainWindow()
         {
             InitializeComponent();
 
-            ConfigAndLogCollectorViewModel vm = new ConfigAndLogCollectorViewModel();
+            vm = new ConfigAndLogCollectorViewModel();
             DataContext = vm;
         }
 
+        private void GetDataButton_Click(object sender, RoutedEventArgs e)
+        {
+            ;
+        }
     }
 }

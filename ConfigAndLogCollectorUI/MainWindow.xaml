@@ -11,7 +11,7 @@
 
     <Window.Resources>
         <Style x:Key="CommonStyle" TargetType="FrameworkElement">
-            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Margin" Value="2"/>
         </Style>
 
         <Style x:Key="TextBlockStyle1" TargetType="TextBlock" BasedOn="{StaticResource CommonStyle}">
@@ -23,16 +23,21 @@
             <Setter Property="FontSize" Value="11"/>
         </Style>
 
+        <Style x:Key="TextInListBoxStyle1" TargetType="TextBlock">
+            <Setter Property="Margin" Value="5 0 0 0"/>
+        </Style>
+
         <Style x:Key="TabControlStyle1" TargetType="TabControl" BasedOn="{StaticResource CommonStyle}">
         </Style>
 
 
         <converters:ShareListItemConverter x:Key="ShareListItemConverter"/>
+        <converters:OptionListItemConverter x:Key="OptionListItemConverter"/>
 
         <DataTemplate x:Key="ShareItemControlTemplate">
             <DockPanel>
                 <CheckBox IsChecked="{Binding IsSelected}" HorizontalAlignment="Left"/>
-                <TextBlock FontSize="10" >
+                <TextBlock Style="{StaticResource TextInListBoxStyle1}">
                     <TextBlock.Text>
                         <MultiBinding Converter="{StaticResource ShareListItemConverter}">
                             <Binding Path="Name"/>
@@ -46,7 +51,14 @@
         <DataTemplate x:Key="ArchiveOptionControlTemplate">
             <DockPanel>
                 <CheckBox IsChecked="{Binding IsSelected}" HorizontalAlignment="Left"/>
-                <TextBlock FontSize="10" Text="{Binding Name}"/>
+                <TextBlock Style="{StaticResource TextInListBoxStyle1}">
+                    <TextBlock.Text>
+                        <MultiBinding Converter="{StaticResource OptionListItemConverter}">
+                            <Binding Path="Name"/>
+                            <Binding Path="ArchivePathList"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
             </DockPanel>
         </DataTemplate>
 
@@ -71,9 +83,9 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="4*"/>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="3*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="4*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
@@ -82,7 +94,7 @@
 
             <Button Grid.Column="1" Grid.Row="3" x:Name="GetDataButton" 
                     Content="GetData" Width="75" 
-                    HorizontalAlignment="Center"  VerticalAlignment="Center" />
+                    HorizontalAlignment="Center"  VerticalAlignment="Center" Click="GetDataButton_Click" />
 
 
             <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
@@ -94,7 +106,7 @@
             <ListBox Grid.Row="1" Grid.Column="0" 
                  MinHeight="100" 
                  Style="{StaticResource ListBoxStyle1}"
-                 ItemsSource="{Binding ShareList}"                 
+                 ItemsSource="{Binding ShareList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                  ItemTemplate="{StaticResource ShareItemControlTemplate}"/>
 
 
@@ -108,7 +120,7 @@
             <ListBox Grid.Row="1" Grid.Column="1" 
                  MinHeight="100" 
                  Style="{StaticResource ListBoxStyle1}"
-                 ItemsSource="{Binding OptionList}"
+                 ItemsSource="{Binding OptionList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                  ItemTemplate="{StaticResource ArchiveOptionControlTemplate}"/>
 
 
@@ -122,7 +134,7 @@
             <ListBox  Grid.Row="3" Grid.Column="0" 
                   MinHeight="100" 
                   Style="{StaticResource ListBoxStyle1}"
-                  ItemsSource="{Binding OptionList}"
+                  ItemsSource="{Binding OptionList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                   ItemTemplate="{StaticResource ExtensionListControlTemplate}"/>
 
 
@@ -148,6 +160,12 @@
                    HorizontalAlignment="Left" VerticalAlignment="Center"/>
             <TabControl Grid.Row="1" Grid.Column="2" Grid.RowSpan="3"
                         Style="{StaticResource TabControlStyle1}">
+                <TabItem Header="Selected Config Files">
+                    
+                </TabItem>
+                <TabItem Header="Selected Log Files">
+
+                </TabItem>
             </TabControl>
 
             
