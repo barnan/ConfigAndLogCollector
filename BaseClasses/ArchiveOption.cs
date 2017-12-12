@@ -3,12 +3,13 @@ using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Xml.Serialization;
+using BaseClasses.Annotations;
 
 namespace BaseClasses
 {
 
     [XmlType("ArchiveOption")]
-    public class ArchiveOption : INotifyPropertyChanged
+    public class ArchiveOption : NotificationBase
     {
         [XmlElement(nameof(Name))]
         public string Name { get; set; }
@@ -28,7 +29,6 @@ namespace BaseClasses
                 _isSelected = value;
                 OnPropertyChanged();
             }
-
         }
 
 
@@ -52,27 +52,39 @@ namespace BaseClasses
             return $"ArchiveOption: {Name}";
         }
 
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
     }
 
 
     [XmlType("ArchPath")]
-    public class ArchPath : BasePath
+    public class ArchPath : BasePath, INotifyPropertyChanged
     {
+        [XmlIgnore]
+        private int _numberOfDays;
         [XmlElement("NumberOfDays"), IODescription("Reperesent the age of represented paths.")]
-        public int NumberOfDays { get; set; }
+        public int NumberOfDays
+        {
+            get { return _numberOfDays; }
+            set
+            {
+                _numberOfDays = value;
+                OnPropertyChanged();
+            }
+        }
 
 
         [XmlIgnore]
-        public bool IsSeleected { get; set; }
+        private bool _isSelected;
 
+        [XmlIgnore]
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                _isSelected = value;
+                OnPropertyChanged();
+            }
+        }
 
         public ArchPath()
         {
@@ -83,17 +95,40 @@ namespace BaseClasses
         {
             NumberOfDays = numberOfDays;
         }
+
     }
 
 
     [XmlInclude(typeof(ArchPath))]
-    public class BasePath
+    public class BasePath : NotificationBase
     {
+        [XmlIgnore]
+        private bool _isRecursive;
+
         [XmlElement("IsRecursive"), IODescription("true->content of subfolders is mapped also. false->only the given folders are mapped.")]
-        public bool IsRecursive { get; set; }
+        public bool IsRecursive {
+            get { return _isRecursive; }
+            set
+            {
+                _isRecursive = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+        [XmlIgnore]
+        private string _path;
 
         [XmlElement("Path"), IODescription("The mapped route.")]
-        public string Path { get; set; }
+        public string Path
+        {
+            get { return _path; }
+            set
+            {
+                _path = value;
+                OnPropertyChanged();
+            }
+        }
 
         public BasePath()
         {

@@ -16,7 +16,7 @@ using System.Threading;
 namespace ConfigAndLogCollectorUI
 {
 
-    public class ConfigAndLogCollectorViewModel : IInitializable, INotifyPropertyChanged
+    public class ConfigAndLogCollectorViewModel : NotificationBase, IInitializable, INotifyPropertyChanged
     {
         private ICollector _collector;
         private string _assemblyPath;
@@ -249,18 +249,6 @@ namespace ConfigAndLogCollectorUI
                 IsInitialized = false;
                 Monitor.Exit(_ownLock);
             }
-        }
-
-        #endregion
-
-
-        #region INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion

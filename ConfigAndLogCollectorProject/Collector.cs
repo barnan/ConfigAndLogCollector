@@ -9,7 +9,7 @@ using System.Threading;
 
 namespace ConfigAndLogCollectorProject
 {
-    public class Collector : ICollector, INotifyPropertyChanged
+    public class Collector : NotificationBase, ICollector
     {
 
         private IRepository<ArchiveOption> _archiveOptionRepository;
@@ -127,18 +127,10 @@ namespace ConfigAndLogCollectorProject
         public event CollectorMessageEventHandler Info;
 
 
-        public IList<ArchiveOption> ArchiveOptionList
-        {
-            get;
-            set;
-        }
+        public IList<ArchiveOption> ArchiveOptionList { get; set; }
 
 
-        public IList<ISharedData> SharedDataList
-        {
-            get;
-            set;
-        }
+        public IList<ISharedData> SharedDataList { get; set; }
 
 
         public void OnError(object sender, string message)
@@ -152,15 +144,7 @@ namespace ConfigAndLogCollectorProject
             Info?.Invoke(sender, message);
         }
 
-
         #endregion
 
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }
