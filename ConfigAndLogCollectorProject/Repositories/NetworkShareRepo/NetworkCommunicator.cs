@@ -100,7 +100,7 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
 
                                 for (int i = 0; i < flds.Length; i++)
                                 {
-                                    filesOfOneShare.Add(new SharedFile() { Path = flds[i].FullName, IsSelected = false });
+                                    filesOfOneShare.Add(new SharedFile() { Path = flds[i].FullName, IsSelected = false, NetName = sh.NetName});
                                 }
 
                                 sharedDataList.Add(filesOfOneShare);

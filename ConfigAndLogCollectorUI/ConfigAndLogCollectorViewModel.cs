@@ -83,6 +83,21 @@ namespace ConfigAndLogCollectorUI
             return v?.Split(',').ToList() ?? new List<string>();
         }
 
+
+        private List<SharedFile> _fileList;
+        public List<SharedFile> FileList
+        {
+            get { return _fileList; }
+            set
+            {
+                _fileList = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+
+
         public IList<ArchiveOption> OptionList
         {
             get { return _collector.ArchiveOptionList; }
