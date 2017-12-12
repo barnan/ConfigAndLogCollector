@@ -71,7 +71,6 @@
                     <TextBlock.Text>
                         <MultiBinding Converter="{StaticResource ExtensionListItemConverter}">
                             <Binding Path="Path"/>
-                            <Binding Path="NumberOfDays"/>
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
@@ -116,7 +115,7 @@
             <ListBox Grid.Row="1" Grid.Column="0" 
                  MinHeight="100" 
                  Style="{StaticResource ListBoxStyle1}"
-                 ItemsSource="{Binding ShareList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                 ItemsSource="{Binding ShareList, UpdateSourceTrigger=PropertyChanged}"
                  ItemTemplate="{StaticResource ShareItemControlTemplate}"/>
 
 

@@ -67,7 +67,8 @@ namespace ConfigAndLogCollectorUI
                     Init();
 
                     ResetExtensionList(this, null);
-                    SubscribeToListNotification();
+                    SubscribeToOptionListNotification();
+                    SubscribeToShareListNotification();
                 }
                 catch (Exception ex)
                 {
@@ -96,6 +97,45 @@ namespace ConfigAndLogCollectorUI
         }
 
 
+        private void ResetFileList(object obj, PropertyChangedEventArgs args)
+        {
+            _fileList = new List<SharedFile>();
+
+            foreach (ArchiveOption aopt in OptionList)
+            {
+                if (aopt == null)
+                {
+                    break;
+                }
+
+                if (!aopt.IsSelected)
+                {
+                    continue;
+                }
+
+                foreach (ArchPath p in aopt.ArchivePathList)
+                {
+                    _extensionList.Add(p);
+                    p.IsSelected = true;
+                }
+            }
+            OnPropertyChanged("FileList");
+        }
+
+
+        private void SubscribeToShareListNotification()
+        {
+            foreach (SharedData shl in ShareList)
+            {
+                if (shl == null)
+                {
+                    break;
+                }
+
+                shl.PropertyChanged -= ResetFileList;
+                shl.PropertyChanged += ResetFileList;
+            }
+        }
 
 
         public IList<ArchiveOption> OptionList
@@ -105,7 +145,7 @@ namespace ConfigAndLogCollectorUI
             {
                 _collector.ArchiveOptionList = value;
 
-                SubscribeToListNotification();
+                SubscribeToOptionListNotification();
 
                 OnPropertyChanged();
             }
@@ -114,16 +154,10 @@ namespace ConfigAndLogCollectorUI
         public IList<ISharedData> ShareList
         {
             get { return _collector.SharedDataList; }
-            set
-            {
-                _collector.SharedDataList = value;
-                OnPropertyChanged();
-            }
         }
 
 
         private IList<ArchPath> _extensionList;
-
         public IList<ArchPath> ExtensionList
         {
             get { return _extensionList; }
@@ -154,13 +188,14 @@ namespace ConfigAndLogCollectorUI
                 foreach (ArchPath p in aopt.ArchivePathList)
                 {
                     _extensionList.Add(p);
+                    p.IsSelected = true;
                 }
             }
             OnPropertyChanged("ExtensionList");
         }
 
 
-        private void SubscribeToListNotification()
+        private void SubscribeToOptionListNotification()
         {
             foreach (ArchiveOption aopt in OptionList)
             {
@@ -171,9 +206,11 @@ namespace ConfigAndLogCollectorUI
 
                 aopt.PropertyChanged -= ResetExtensionList;
                 aopt.PropertyChanged += ResetExtensionList;
+
+                //aopt.PropertyChanged -= ResetFileList;
+                //aopt.PropertyChanged += ResetFileList;
             }
         }
-
 
 
         public List<MessageOnScreen> MessageOnScreenList { get; set; }
@@ -199,9 +236,9 @@ namespace ConfigAndLogCollectorUI
             }
             catch (Exception ex)
             {
-                _logger?.ErrorLog($"Error: {ex.Message}",CLASS_NAME);
+                _logger?.ErrorLog($"Error: {ex.Message}", CLASS_NAME);
             }
-            
+
         }
 
 

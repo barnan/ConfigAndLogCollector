@@ -52,7 +52,7 @@ namespace ConfigAndLogCollectorProject
                     }
                     else
                     {
-                        ArchiveOptionList = _archiveOptionRepository.GetAll();
+                        _archiveOptionList = _archiveOptionRepository.GetAll();
                         IsInitialized = true;
                     }
                 }
@@ -74,7 +74,7 @@ namespace ConfigAndLogCollectorProject
                     else
                     {
 
-                        SharedDataList = _shareRepository.GetAll();
+                        _sharedDataList = _shareRepository.GetAll();
                         IsInitialized &= true;
                     }
                 }
@@ -127,10 +127,29 @@ namespace ConfigAndLogCollectorProject
         public event CollectorMessageEventHandler Info;
 
 
-        public IList<ArchiveOption> ArchiveOptionList { get; set; }
+        private IList<ArchiveOption> _archiveOptionList;
+        public IList<ArchiveOption> ArchiveOptionList
+        {
+            get
+            {
+                return _archiveOptionRepository.GetAll();
+            }
+            set
+            {
+                _archiveOptionList = value;
+                OnPropertyChanged();
+            }
+        }
 
 
-        public IList<ISharedData> SharedDataList { get; set; }
+        private IList<ISharedData> _sharedDataList;
+        public IList<ISharedData> SharedDataList
+        {
+            get
+            {
+                return _shareRepository.GetAll();
+            }
+        }
 
 
         public void OnError(object sender, string message)

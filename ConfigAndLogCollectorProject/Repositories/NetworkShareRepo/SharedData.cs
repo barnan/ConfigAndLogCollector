@@ -6,11 +6,11 @@ using System;
 namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
 {
 
-    public class SharedData : ISharedData
+    public class SharedData : NotificationBase, ISharedData
     {
         public string Name { get; private set; }
-        public string NetName { get; set; }
-        public bool IsSelected { get; set; }
+        public string NetName { get; private set; }
+
         IList<SharedFile> _fileList;
 
 
@@ -20,6 +20,20 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
             NetName = serverName;
             IsSelected = isSelected;
             _fileList = new List<SharedFile>();
+        }
+
+        private bool _isSelected;
+        public bool IsSelected
+        {
+            get
+            {
+                return _isSelected;
+            }
+            set
+            {
+                _isSelected = value;
+                OnPropertyChanged();
+            }
         }
 
 

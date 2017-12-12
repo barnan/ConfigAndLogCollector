@@ -19,19 +19,19 @@ namespace ConfigAndLogCollectorUI.Converter
                 return Binding.DoNothing;
             }
 
-            int dayNumber = 0;
-            try
-            {
-                dayNumber = (int) values[1];
-            }
-            catch (Exception)
-            {
-                return Binding.DoNothing;
-            }
+            //int dayNumber = 0;
+            //try
+            //{
+            //    dayNumber = (int) values[1];
+            //}
+            //catch (Exception)
+            //{
+            //    return Binding.DoNothing;
+            //}
+            //string placeholder = dayNumber < 10 ? " " : string.Empty;
+            //return $"{dayNumber}{placeholder} | {path}";
 
-            string placeholder = dayNumber < 10 ? " " : string.Empty;
-
-            return $"{dayNumber}{placeholder} | {path}";
+            return path;
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

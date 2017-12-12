@@ -15,7 +15,7 @@ namespace Interfaces
         void OnError(object sender, string message);
         void OnInfo(object sender, string message);
 
-        IList<ISharedData> SharedDataList { get; set; }
+        IList<ISharedData> SharedDataList { get; }
         IList<ArchiveOption> ArchiveOptionList { get; set; }
 
     }
