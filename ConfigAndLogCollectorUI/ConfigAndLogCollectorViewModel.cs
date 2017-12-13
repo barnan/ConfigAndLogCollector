@@ -15,7 +15,7 @@ using System.Threading;
 
 namespace ConfigAndLogCollectorUI
 {
-
+   
     public class ConfigAndLogCollectorViewModel : NotificationBase, IInitializable, INotifyPropertyChanged
     {
         private ICollector _collector;
@@ -27,6 +27,8 @@ namespace ConfigAndLogCollectorUI
 
         public ConfigAndLogCollectorViewModel()
         {
+            MessageOnScreenList = new List<MessageOnScreen>();
+
             try
             {
                 _logger = LogManager.GetCurrentClassLogger();
@@ -39,7 +41,7 @@ namespace ConfigAndLogCollectorUI
             if (!File.Exists("App.config"))
             {
                 _logger?.InfoLog("App.config does not exist.", CLASS_NAME);
-                //ErrorMessageHandler(this, "App.config does not exist.");
+                ErrorMessageHandler(this, "App.config does not exist.");
             }
             else
             {
@@ -49,13 +51,13 @@ namespace ConfigAndLogCollectorUI
                     _assemblyPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
                     string fullPath = Path.Combine(_assemblyPath, ConfigFileName);
 
-                    //InfoMessageHandler(this, $"The path of the used configuration file: {fullPath}");
+                    InfoMessageHandler(this, $"The path of the used configuration file: {fullPath}");
                     _logger.InfoLog($"The path of the used configuration file: {fullPath}", CLASS_NAME);
 
                     string toolNames = ConfigurationManager.AppSettings["ToolNames"];
                     List<string> toolNameList = GetToolNamesList(toolNames);
 
-                    //InfoMessageHandler(this, $"The tool names: {toolNames}");
+                    InfoMessageHandler(this, $"The tool names: {toolNames}");
                     _logger.InfoLog($"The tool names: {toolNames}", CLASS_NAME);
 
                     //instantiate:
@@ -73,7 +75,7 @@ namespace ConfigAndLogCollectorUI
                 catch (Exception ex)
                 {
                     _logger?.ErrorLog($"Exception occured: {ex}", CLASS_NAME);
-                    //ErrorMessageHandler(this, $"Exception occured: {ex.Message}");
+                    ErrorMessageHandler(this, $"Exception occured: {ex.Message}");
                 }
             }
 
@@ -213,6 +215,9 @@ namespace ConfigAndLogCollectorUI
         }
 
 
+        public State CollectorState => _collector.State;
+
+
         public List<MessageOnScreen> MessageOnScreenList { get; set; }
 
         public void InfoMessageHandler(object sender, string message)
@@ -251,9 +256,7 @@ namespace ConfigAndLogCollectorUI
             try
             {
                 Monitor.Enter(_ownLock);
-
-                MessageOnScreenList = new List<MessageOnScreen>();
-
+                
                 _collector.Error += ErrorMessageHandler;
                 _collector.Info += InfoMessageHandler;
 

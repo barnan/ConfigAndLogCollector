@@ -97,10 +97,10 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
 
                 ShareList = _nc.GetFileListOfShares(ToolNameList);
 
-                if (ShareList.Count == 0)
+                if (ShareList == null)
                 {
                     IsInitialized = false;
-                    string message = Logger?.InfoLog("The arrived share list has zero elements.", CLASS_NAME);
+                    string message = Logger?.InfoLog("The arrived share list is null.", CLASS_NAME);
                     throw new Exception(message);
 
                 }

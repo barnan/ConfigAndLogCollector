@@ -3,8 +3,6 @@ using Interfaces;
 using NLog;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace ConfigAndLogCollectorProject
@@ -12,10 +10,23 @@ namespace ConfigAndLogCollectorProject
     public class Collector : NotificationBase, ICollector
     {
 
-        private IRepository<ArchiveOption> _archiveOptionRepository;
-        private IGetterRepository<ISharedData> _shareRepository;
+        private readonly IRepository<ArchiveOption> _archiveOptionRepository;
+        private readonly IGetterRepository<ISharedData> _shareRepository;
         private readonly object _ownLock = new object();
         private const string CLASS_NAME = nameof(Collector);
+
+
+        private State _state;
+        public State State
+        {
+            get { return _state; }
+            set
+            {
+                _state = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         ILogger Logger { get; }
 
@@ -47,12 +58,15 @@ namespace ConfigAndLogCollectorProject
                     bool initrepo1 = _archiveOptionRepository?.Init() ?? false;
                     if (!initrepo1)
                     {
-                        Logger?.InfoLog("Archive option could not be initialized.", CLASS_NAME);
+                        string message = Logger?.ErrorLog("Archive option repository could not be initialized.", CLASS_NAME);
+                        OnError(this, message);
                         IsInitialized = false;
                     }
                     else
                     {
                         _archiveOptionList = _archiveOptionRepository.GetAll();
+                        string message = Logger?.InfoLog($"Archive option repository initialized. Number of Options: {_archiveOptionList?.Count}", CLASS_NAME);
+                        OnInfo(this, message);
                         IsInitialized = true;
                     }
                 }
@@ -68,22 +82,26 @@ namespace ConfigAndLogCollectorProject
                     bool initrepo2 = _shareRepository?.Init() ?? false;
                     if (!initrepo2)
                     {
-                        Logger?.InfoLog("Share repository could not be initialized.", CLASS_NAME);
-                        IsInitialized &= false;
+                        string message = Logger?.ErrorLog("Share repository could not be initialized.", CLASS_NAME);
+                        OnError(this, message);
+                        IsInitialized = false;
                     }
                     else
                     {
-
                         _sharedDataList = _shareRepository.GetAll();
-                        IsInitialized &= true;
+                        string message = Logger?.InfoLog($"Share repository initialized. Number of shares: {_sharedDataList?.Count}", CLASS_NAME);
+                        OnInfo(this, message);
+                        //IsInitialized &= true;
+                        State = State.Idle;
                     }
                 }
                 catch (Exception ex)
                 {
-                    IsInitialized &= false;
+                    IsInitialized = false;
 
                     string message = Logger?.ErrorLog($"Exception occured: {ex.Message}", CLASS_NAME);
                     OnError(this, message);
+                    State = State.Error;
                 }
 
                 return IsInitialized;
@@ -132,7 +150,8 @@ namespace ConfigAndLogCollectorProject
         {
             get
             {
-                return _archiveOptionRepository.GetAll();
+                _archiveOptionList = _archiveOptionRepository.GetAll();
+                return _archiveOptionList;
             }
             set
             {
@@ -147,7 +166,8 @@ namespace ConfigAndLogCollectorProject
         {
             get
             {
-                return _shareRepository.GetAll();
+                _sharedDataList = _shareRepository.GetAll();
+                return _sharedDataList;
             }
         }
 

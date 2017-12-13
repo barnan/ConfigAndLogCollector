@@ -1,5 +1,6 @@
 ﻿using BaseClasses;
 using System.Collections.Generic;
+using System.Data;
 
 namespace Interfaces
 {
@@ -17,6 +18,8 @@ namespace Interfaces
 
         IList<ISharedData> SharedDataList { get; }
         IList<ArchiveOption> ArchiveOptionList { get; set; }
+
+        State State { get; }
 
     }
 }

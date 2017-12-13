@@ -35,6 +35,7 @@
         <converters:OptionListItemConverter x:Key="OptionListItemConverter"/>
         <converters:MessageOnScreenListConverter x:Key="MessageOnScreenListConverter"/>
         <converters:ExtensionListItemConverter x:Key="ExtensionListItemConverter"/>
+        <converters:EllipseColorConverter x:Key="EllipseColorConverter"/>
 
         <DataTemplate x:Key="ShareItemControlTemplate">
             <DockPanel>
@@ -149,7 +150,8 @@
 
             <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
             <!-- Saving output -->
-            <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="3"  >
+            <DockPanel Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="3">
+            <!--<StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="3"  >-->
                 <!--<GroupBox Header="Message" MinHeight="100" MinWidth="550">
                     <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding MessageOnScreenList}" >
                         <DataGridTextColumn Header="MessageType" Binding="{Binding Type}" />
@@ -157,16 +159,19 @@
                     </DataGrid>
                 </GroupBox>-->
 
-                <TextBlock Style="{StaticResource CommonStyle}"  Text="{Binding MessageOnScreenList, Converter={StaticResource MessageOnScreenListConverter}}"/>
+                <TextBlock Style="{StaticResource CommonStyle}"  MaxWidth="720" DockPanel.Dock="Left" TextWrapping="Wrap"
+                           Text="{Binding MessageOnScreenList, Converter={StaticResource MessageOnScreenListConverter}}"/>
                     
 
-                <Ellipse Grid.Column="2" Grid.Row="4" 
-                     Fill="Gray" Stroke="Black" Style="{StaticResource CommonStyle}"
-                     HorizontalAlignment="Right" VerticalAlignment="Bottom"  
+                <Ellipse DockPanel.Dock="Right"
+                     Fill="{Binding CollectorState, Converter={StaticResource EllipseColorConverter}}" Stroke="Black" Style="{StaticResource CommonStyle}"
+                     HorizontalAlignment="Right" VerticalAlignment="Center"  
                      Width="20" Height="20"/>
-            </StackPanel>
-            
+            <!--</StackPanel>-->
+            </DockPanel>
+
             <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
+            <!--File List--> 
             <TextBlock Grid.Row="0"  Grid.Column="2" Style="{StaticResource TextBlockStyle1}" 
                    Text="User Selectable file list" TextWrapping="Wrap"
                    HorizontalAlignment="Left" VerticalAlignment="Center"/>

@@ -16,4 +16,13 @@ namespace BaseClasses
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
+
+
+    public enum State
+    {
+        Idle = 0,
+        InProgress,
+        Error
+    }
+
 }
