@@ -58,21 +58,29 @@ namespace ConfigAndLogCollectorUI
                     bool initrepo1 = _archiveOptionRepository?.Init() ?? false;
                     if (!initrepo1)
                     {
+                        IsInitialized = false;
+                        State = State.Error;
+
                         string message = Logger?.ErrorLog("Archive option repository could not be initialized.", CLASS_NAME);
                         OnError(this, message);
-                        IsInitialized = false;
+                        
                     }
                     else
                     {
                         _archiveOptionList = _archiveOptionRepository.GetAll();
+
+                        IsInitialized = true;
+                        State = State.Ready;
+
                         string message = Logger?.InfoLog($"Archive option repository initialized. Number of Options: {_archiveOptionList?.Count}", CLASS_NAME);
                         OnInfo(this, message);
-                        IsInitialized = true;
                     }
                 }
                 catch (Exception ex)
                 {
                     IsInitialized = false;
+                    State = State.Error;
+
                     string message = Logger?.ErrorLog($"Exception occured: {ex.Message}", CLASS_NAME);
                     OnError(this, message);
                 }
@@ -82,26 +90,31 @@ namespace ConfigAndLogCollectorUI
                     bool initrepo2 = _shareRepository?.Init() ?? false;
                     if (!initrepo2)
                     {
+                        IsInitialized = false;
+                        State = State.Error;
+
                         string message = Logger?.ErrorLog("Share repository could not be initialized.", CLASS_NAME);
                         OnError(this, message);
-                        IsInitialized = false;
+                        
                     }
                     else
                     {
                         _sharedDataList = _shareRepository.GetAll();
+
+                        IsInitialized &= true;
+                        State &= State.Idle;
+
                         string message = Logger?.InfoLog($"Share repository initialized. Number of shares: {_sharedDataList?.Count}", CLASS_NAME);
                         OnInfo(this, message);
-                        //IsInitialized &= true;
-                        State = State.Idle;
                     }
                 }
                 catch (Exception ex)
                 {
                     IsInitialized = false;
+                    State = State.Error;
 
                     string message = Logger?.ErrorLog($"Exception occured: {ex.Message}", CLASS_NAME);
                     OnError(this, message);
-                    State = State.Error;
                 }
 
                 return IsInitialized;
