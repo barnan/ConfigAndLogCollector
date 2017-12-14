@@ -1,5 +1,6 @@
 ﻿using BaseClasses;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 
 namespace Interfaces
@@ -8,7 +9,7 @@ namespace Interfaces
     public delegate void CollectorMessageEventHandler(object sender, string message);
 
 
-    public interface ICollector : IInitializable
+    public interface ICollector : IInitializable, INotifyPropertyChanged
     {
         event CollectorMessageEventHandler Info;
         event CollectorMessageEventHandler Error;

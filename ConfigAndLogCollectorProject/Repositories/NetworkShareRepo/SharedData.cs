@@ -8,10 +8,10 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
 
     public class SharedData : NotificationBase, ISharedData
     {
-        public string Name { get; private set; }
-        public string NetName { get; private set; }
+        public string Name { get; }
+        public string NetName { get; }
 
-        IList<SharedFile> _fileList;
+        private readonly IList<SharedFile> _fileList;
 
 
         public SharedData(string name, string serverName, bool isSelected)
@@ -21,6 +21,7 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
             IsSelected = isSelected;
             _fileList = new List<SharedFile>();
         }
+
 
         private bool _isSelected;
         public bool IsSelected
@@ -37,13 +38,7 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
         }
 
 
-        IList<SharedFile> ISharedData.FileList
-        {
-            get
-            {
-                return _fileList;
-            }
-        }
+        IList<SharedFile> ISharedData.FileList => _fileList;
 
 
         public SharedFile this[int i]

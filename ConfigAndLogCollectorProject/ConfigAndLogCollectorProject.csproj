@@ -46,7 +46,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Collector.cs" />
     <Compile Include="Repositories\ConfigRepo\ConfigRepoBase.cs" />
     <Compile Include="Repositories\NetworkShareRepo\SharedData.cs" />
     <Compile Include="Repositories\ConfigRepo\TestConfigRepo.cs" />

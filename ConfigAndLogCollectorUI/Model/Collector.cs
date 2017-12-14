@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace ConfigAndLogCollectorProject
+namespace ConfigAndLogCollectorUI
 {
     public class Collector : NotificationBase, ICollector
     {

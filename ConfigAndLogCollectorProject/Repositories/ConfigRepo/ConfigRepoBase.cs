@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
 {
-    public abstract class ConfigRepoBase : IRepository<ArchiveOption>, INamedElement, IInitializable
+    public abstract class ConfigRepoBase : IRepository<ArchiveOption>, INamedElement
     {
 
         protected ILogger Logger { get; set; }

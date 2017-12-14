@@ -1,5 +1,4 @@
 ﻿using BaseClasses;
-using ConfigAndLogCollectorProject;
 using ConfigAndLogCollectorProject.Repositories.ConfigRepo;
 using ConfigAndLogCollectorProject.Repositories.NetworkShareRepo;
 using Interfaces;
@@ -10,7 +9,6 @@ using System.ComponentModel;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace ConfigAndLogCollectorUI
@@ -18,10 +16,10 @@ namespace ConfigAndLogCollectorUI
    
     public class ConfigAndLogCollectorViewModel : NotificationBase, IInitializable, INotifyPropertyChanged
     {
-        private ICollector _collector;
-        private string _assemblyPath;
-        private ILogger _logger;
-        private object _ownLock = new object();
+        private readonly ICollector _collector;
+        private readonly string _assemblyPath;
+        private readonly ILogger _logger;
+        private readonly object _ownLock = new object();
         private const string CLASS_NAME = nameof(ConfigAndLogCollectorViewModel);
 
 
@@ -47,9 +45,9 @@ namespace ConfigAndLogCollectorUI
             {
                 try
                 {
-                    string ConfigFileName = ConfigurationManager.AppSettings["ConfigFileName"];
+                    string configFileName = ConfigurationManager.AppSettings["ConfigFileName"];
                     _assemblyPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-                    string fullPath = Path.Combine(_assemblyPath, ConfigFileName);
+                    string fullPath = Path.Combine(_assemblyPath ?? string.Empty, configFileName);
 
                     InfoMessageHandler(this, $"The path of the used configuration file: {fullPath}");
                     _logger.InfoLog($"The path of the used configuration file: {fullPath}", CLASS_NAME);
@@ -121,13 +119,13 @@ namespace ConfigAndLogCollectorUI
                     p.IsSelected = true;
                 }
             }
-            OnPropertyChanged("FileList");
+            OnPropertyChanged(nameof(FileList));
         }
 
 
         private void SubscribeToShareListNotification()
         {
-            foreach (SharedData shl in ShareList)
+            foreach (ISharedData shl in ShareList)
             {
                 if (shl == null)
                 {
