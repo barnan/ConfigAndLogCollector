@@ -1,10 +1,11 @@
 ﻿using Interfaces;
 using System.IO;
 using shareFromNet;
+using BaseClasses;
 
 namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
 {
-    public class ShareAdapter : IShare
+    public class ShareAdapter : NotificationBase, IShare
     {
         Share Sh { get; }
 
@@ -13,7 +14,16 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
             Sh = sh;
         }
 
-        public bool IsSelected { get; set; }
+        private bool _isSelected;
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                _isSelected = value;
+                OnPropertyChanged();
+            }
+        }
 
         public string NetName => Sh.NetName;
 

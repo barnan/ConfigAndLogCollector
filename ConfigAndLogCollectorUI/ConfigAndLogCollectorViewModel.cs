@@ -69,7 +69,7 @@ namespace ConfigAndLogCollectorUI
                     ResetExtensionList(this, null);
                     SubscribeToOptionListNotification();
                     //ResetFileList(this, null);
-                    //SubscribeToShareListNotification();
+                    SubscribeToShareListNotification();
                 }
                 catch (Exception ex)
                 {
@@ -86,46 +86,31 @@ namespace ConfigAndLogCollectorUI
         }
 
 
-        //private List<SharedFile> _fileList;
-        //public List<SharedFile> FileList
-        //{
-        //    get { return _fileList; }
-        //    set
-        //    {
-        //        _fileList = value;
-        //        OnPropertyChanged();
-        //    }
-        //}
+        public IList<SharedFile> FileList
+        {
+            get { return _collector.SharedFileList; }
+        }
 
 
-        //private void ResetFileList(object obj, PropertyChangedEventArgs args)
-        //{
-        //    _fileList = new List<IShare>();
-
-        //    foreach (IShare shd in ShareList)
-        //    {
-        //        foreach (ArchPath ap in ExtensionList)
-        //        {
-
-        //        }
-        //    }
-        //    OnPropertyChanged(nameof(FileList));
-        //}
+        private void ResetFileList(object obj, PropertyChangedEventArgs args)
+        {
+            OnPropertyChanged(nameof(FileList));
+        }
 
 
-        //private void SubscribeToShareListNotification()
-        //{
-        //    foreach (IShare shl in ShareList)
-        //    {
-        //        if (shl == null)
-        //        {
-        //            break;
-        //        }
+        private void SubscribeToShareListNotification()
+        {
+            foreach (IShare shl in ShareList)
+            {
+                if (shl == null)
+                {
+                    break;
+                }
 
-        //        shl.PropertyChanged -= ResetFileList;
-        //        shl.PropertyChanged += ResetFileList;
-        //    }
-        //}
+                shl.PropertyChanged -= ResetFileList;
+                shl.PropertyChanged += ResetFileList;
+            }
+        }
 
 
         public IList<ArchiveOption> OptionList
@@ -195,8 +180,8 @@ namespace ConfigAndLogCollectorUI
                 aopt.PropertyChanged -= ResetExtensionList;
                 aopt.PropertyChanged += ResetExtensionList;
 
-                //aopt.PropertyChanged -= ResetFileList;
-                //aopt.PropertyChanged += ResetFileList;
+                aopt.PropertyChanged -= ResetFileList;
+                aopt.PropertyChanged += ResetFileList;
             }
         }
 

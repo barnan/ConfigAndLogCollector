@@ -72,6 +72,7 @@
     </Compile>
     <Compile Include="Command\RelayCommand.cs" />
     <Compile Include="ConfigAndLogCollectorViewModel.cs" />
+    <Compile Include="Converter\FileListItemConverter.cs" />
     <Compile Include="Converter\EllipseColorConverter.cs" />
     <Compile Include="Converter\ExtensionListItemConverter.cs" />
     <Compile Include="Converter\MessageOnScreenColorConverter.cs" />

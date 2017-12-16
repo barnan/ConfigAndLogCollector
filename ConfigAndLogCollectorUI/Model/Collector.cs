@@ -4,6 +4,9 @@ using Interfaces;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Threading;
 
 namespace ConfigAndLogCollectorUI
@@ -201,20 +204,51 @@ namespace ConfigAndLogCollectorUI
             {
                 List<SharedFile> fileList = new List<SharedFile>();
 
-                foreach (IShare shd in ShareList)
+                foreach (IShare sh in ShareList)
                 {
+                    DirectoryInfo dirInfo = sh.Root;
+
+                    FileInfo[] flds = dirInfo.GetFiles("*", SearchOption.AllDirectories);
+
+                    for (int i = 0; i < flds.Length; i++)
+                    {
+                        FileVersionInfo fileVersionInfo = FileVersionInfo.GetVersionInfo(flds[i].FullName);
+                        fileList.Add(new SharedFile() { Path = flds[i].FullName, IsSelected = false, ServerName = sh.Server, NetName = sh.NetName, Version = fileVersionInfo.FileVersion });
+                    }
+
+                    if (!sh.IsSelected)
+                    {
+                        continue;
+                    }
+
                     foreach (ArchiveOption aop in ArchiveOptionList)
                     {
+                        if (!aop.IsSelected)
+                        {
+                            continue;
+                        }
 
+                        foreach (ArchPath ap in aop.ArchivePathList)
+                        {
+                            if (!ap.IsSelected)
+                            {
+                                continue;
+                            }
 
+                            SearchOption searchOption = ap.IsRecursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
 
+                            FileInfo[] selectedFlds = dirInfo.GetFiles(ap.Path, searchOption);
+
+                            List<SharedFile> listToModify = fileList.Where(p => selectedFlds.Any(x => p.Path == x.FullName)).ToList();
+
+                            listToModify.ForEach(c => c.IsSelected = true);
+                        }
                     }
                 }
 
                 return fileList;
             }
         }
-
 
         #endregion
 

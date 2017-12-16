@@ -1,11 +1,12 @@
 ﻿
 using BaseClasses;
 using shareFromNet;
+using System.ComponentModel;
 using System.IO;
 
 namespace Interfaces
 {
-    public interface IShare
+    public interface IShare : INotifyPropertyChanged
     {
         bool IsSelected { get; set; }
 

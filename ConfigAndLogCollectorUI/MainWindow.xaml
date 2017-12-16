@@ -33,6 +33,7 @@
 
         <converters:ShareListItemConverter x:Key="ShareListItemConverter"/>
         <converters:OptionListItemConverter x:Key="OptionListItemConverter"/>
+        <converters:FileListItemConverter x:Key="FileListItemConverter"/>
         <converters:MessageOnScreenListConverter x:Key="MessageOnScreenListConverter"/>
         <converters:ExtensionListItemConverter x:Key="ExtensionListItemConverter"/>
         <converters:EllipseColorConverter x:Key="EllipseColorConverter"/>
@@ -78,7 +79,20 @@
             </DockPanel>
         </DataTemplate>
 
-
+        <DataTemplate x:Key="FileListControlTemplate">
+            <DockPanel>
+                <CheckBox IsChecked="{Binding IsSelected}"/>
+                <TextBlock Style="{StaticResource TextInListBoxStyle1}">
+                    <TextBlock.Text>
+                        <MultiBinding Converter="{StaticResource FileListItemConverter}">
+                            <Binding Path="NetName"/>
+                            <Binding Path="Version"/>
+                            <Binding Path="Path"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </DockPanel>
+        </DataTemplate>
 
     </Window.Resources>
 
@@ -175,15 +189,19 @@
             <TextBlock Grid.Row="0"  Grid.Column="2" Style="{StaticResource TextBlockStyle1}" 
                    Text="User Selectable file list" TextWrapping="Wrap"
                    HorizontalAlignment="Left" VerticalAlignment="Center"/>
-            <TabControl Grid.Row="1" Grid.Column="2" Grid.RowSpan="3"
+            <ListBox  Grid.Row="1" Grid.Column="2" Grid.RowSpan="3" 
+                  MinHeight="100" Height="Auto"
+                  Style="{StaticResource ListBoxStyle1}"
+                  ItemsSource="{Binding FileList, UpdateSourceTrigger=PropertyChanged}"
+                  ItemTemplate="{StaticResource FileListControlTemplate}"/>
+            
+            <!--<TabControl Grid.Row="1" Grid.Column="2" Grid.RowSpan="3"
                         Style="{StaticResource TabControlStyle1}">
                 <TabItem Header="Selected Config Files">
-                    
                 </TabItem>
                 <TabItem Header="Selected Log Files">
-
                 </TabItem>
-            </TabControl>
+            </TabControl>-->
 
             
         </Grid>
