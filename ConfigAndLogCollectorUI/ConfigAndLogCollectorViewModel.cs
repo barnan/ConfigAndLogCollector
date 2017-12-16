@@ -13,7 +13,7 @@ using System.Threading;
 
 namespace ConfigAndLogCollectorUI
 {
-   
+
     public class ConfigAndLogCollectorViewModel : NotificationBase, IInitializable, INotifyPropertyChanged
     {
         private readonly ICollector _collector;
@@ -60,7 +60,7 @@ namespace ConfigAndLogCollectorUI
 
                     //instantiate:
                     IRepository<ArchiveOption> xmlConfigRepo = new TestConfigRepo(); //new XmlConfigRepo(fullPath);
-                    IGetterRepository<ISharedData> shareRepo = new NetworkShareRepo(toolNameList);
+                    IGetterRepository<IShare> shareRepo = new NetworkShareRepo(toolNameList);
 
                     _collector = new Collector(xmlConfigRepo, shareRepo);
 
@@ -68,7 +68,8 @@ namespace ConfigAndLogCollectorUI
 
                     ResetExtensionList(this, null);
                     SubscribeToOptionListNotification();
-                    SubscribeToShareListNotification();
+                    //ResetFileList(this, null);
+                    //SubscribeToShareListNotification();
                 }
                 catch (Exception ex)
                 {
@@ -85,57 +86,46 @@ namespace ConfigAndLogCollectorUI
         }
 
 
-        private List<SharedFile> _fileList;
-        public List<SharedFile> FileList
-        {
-            get { return _fileList; }
-            set
-            {
-                _fileList = value;
-                OnPropertyChanged();
-            }
-        }
+        //private List<SharedFile> _fileList;
+        //public List<SharedFile> FileList
+        //{
+        //    get { return _fileList; }
+        //    set
+        //    {
+        //        _fileList = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
 
 
-        private void ResetFileList(object obj, PropertyChangedEventArgs args)
-        {
-            _fileList = new List<SharedFile>();
+        //private void ResetFileList(object obj, PropertyChangedEventArgs args)
+        //{
+        //    _fileList = new List<IShare>();
 
-            foreach (ArchiveOption aopt in OptionList)
-            {
-                if (aopt == null)
-                {
-                    break;
-                }
+        //    foreach (IShare shd in ShareList)
+        //    {
+        //        foreach (ArchPath ap in ExtensionList)
+        //        {
 
-                if (!aopt.IsSelected)
-                {
-                    continue;
-                }
-
-                foreach (ArchPath p in aopt.ArchivePathList)
-                {
-                    _extensionList.Add(p);
-                    p.IsSelected = true;
-                }
-            }
-            OnPropertyChanged(nameof(FileList));
-        }
+        //        }
+        //    }
+        //    OnPropertyChanged(nameof(FileList));
+        //}
 
 
-        private void SubscribeToShareListNotification()
-        {
-            foreach (ISharedData shl in ShareList)
-            {
-                if (shl == null)
-                {
-                    break;
-                }
+        //private void SubscribeToShareListNotification()
+        //{
+        //    foreach (IShare shl in ShareList)
+        //    {
+        //        if (shl == null)
+        //        {
+        //            break;
+        //        }
 
-                shl.PropertyChanged -= ResetFileList;
-                shl.PropertyChanged += ResetFileList;
-            }
-        }
+        //        shl.PropertyChanged -= ResetFileList;
+        //        shl.PropertyChanged += ResetFileList;
+        //    }
+        //}
 
 
         public IList<ArchiveOption> OptionList
@@ -145,15 +135,13 @@ namespace ConfigAndLogCollectorUI
             {
                 _collector.ArchiveOptionList = value;
 
-                SubscribeToOptionListNotification();
-
                 OnPropertyChanged();
             }
         }
 
-        public IList<ISharedData> ShareList
+        public IList<IShare> ShareList
         {
-            get { return _collector.SharedDataList; }
+            get { return _collector.ShareList; }
         }
 
 
@@ -191,7 +179,7 @@ namespace ConfigAndLogCollectorUI
                     p.IsSelected = true;
                 }
             }
-            OnPropertyChanged("ExtensionList");
+            OnPropertyChanged(nameof(ExtensionList));
         }
 
 
@@ -254,7 +242,7 @@ namespace ConfigAndLogCollectorUI
             try
             {
                 Monitor.Enter(_ownLock);
-                
+
                 _collector.Error += ErrorMessageHandler;
                 _collector.Info += InfoMessageHandler;
 

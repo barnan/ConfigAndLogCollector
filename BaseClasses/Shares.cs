@@ -3,7 +3,7 @@ using System.IO;
 using System.Collections;
 using System.Runtime.InteropServices;
 
-namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
+namespace shareFromNet
 {
     #region Share Type
 

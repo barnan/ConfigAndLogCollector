@@ -46,6 +46,7 @@
     <Compile Include="INamedElement.cs" />
     <Compile Include="IInitializable.cs" />
     <Compile Include="IRepository.cs" />
+    <Compile Include="IShare.cs" />
     <Compile Include="ISharedData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

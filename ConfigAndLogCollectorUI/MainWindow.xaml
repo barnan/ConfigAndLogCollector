@@ -43,8 +43,8 @@
                 <TextBlock Style="{StaticResource TextInListBoxStyle1}">
                     <TextBlock.Text>
                         <MultiBinding Converter="{StaticResource ShareListItemConverter}">
-                            <Binding Path="Name"/>
                             <Binding Path="NetName"/>
+                            <Binding Path="Server"/>
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
@@ -144,7 +144,7 @@
             <ListBox  Grid.Row="3" Grid.Column="0" 
                   MinHeight="100" 
                   Style="{StaticResource ListBoxStyle1}"
-                  ItemsSource="{Binding ExtensionList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                  ItemsSource="{Binding ExtensionList, UpdateSourceTrigger=PropertyChanged}"
                   ItemTemplate="{StaticResource ExtensionListControlTemplate}"/>
 
 

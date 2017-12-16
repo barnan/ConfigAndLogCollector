@@ -8,13 +8,13 @@ using System.Threading;
 namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
 {
 
-    public class NetworkShareRepo : IGetterRepository<ISharedData>, IInitializable
+    public class NetworkShareRepo : IGetterRepository<IShare>, IInitializable
     {
-        
+
         private readonly object _ownLock = new object();
         private const string CLASS_NAME = nameof(NetworkShareRepo);
         private readonly NetworkCommunicator _nc;
-        private IList<ISharedData> ShareList { get; set; }
+        private IList<IShare> ShareList { get; set; }
         private List<string> ToolNameList { get; }
         public bool IsInitialized { get; set; }
         private ILogger Logger { get; }
@@ -40,7 +40,7 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
 
         #region IRepository
 
-        public ISharedData Get(int id)
+        public IShare Get(int id)
         {
             lock (_ownLock)
             {
@@ -49,7 +49,7 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
                     throw new Exception(Logger?.InfoLog($"Not initialized yet.", CLASS_NAME));
                 }
 
-                if (id > (ShareList?.Count ?? -1) )
+                if (id > (ShareList?.Count ?? -1))
                 {
                     throw new IndexOutOfRangeException(Logger?.InfoLog("The required index is higher, than number of available options.", CLASS_NAME));
                 }
@@ -58,7 +58,7 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
             }
         }
 
-        public IList<ISharedData> GetAll()
+        public IList<IShare> GetAll()
         {
             lock (_ownLock)
             {
@@ -95,7 +95,7 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
                     throw new Exception(message);
                 }
 
-                ShareList = _nc.GetFileListOfShares(ToolNameList);
+                ShareList = _nc.GetShareList(ToolNameList);
 
                 if (ShareList == null)
                 {

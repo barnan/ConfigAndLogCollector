@@ -29,10 +29,10 @@ namespace BaseClasses
     public sealed class State
     {
         public static readonly State Ready = new State("Ready", "The software is ready for working.", 3);
-        public static readonly State Idle = new State("Idle", "The software is un-initialized.", 2);
-        public static readonly State InProgress = new State("InProgress", "There is an operation in the background.", 1);
+        public static readonly State InProgress = new State("InProgress", "There is an operation in the background.", 2);
+        public static readonly State Idle = new State("Idle", "The software is un-initialized.", 1);
         public static readonly State Error = new State("Error", "The software cannot operate, restart is proposed.", 0);
-        
+
 
         public string Name { get; }
         public string Description { get; }
@@ -48,7 +48,7 @@ namespace BaseClasses
         }
 
 
-        public static State operator& (State left, State right)
+        public static State operator &(State left, State right)
         {
             int lowerValue = left.Value <= right.Value ? left.Value : right.Value;
 
@@ -57,9 +57,9 @@ namespace BaseClasses
                 case 0:
                     return new State("Error", "The software cannot operate, restart is proposed.", 0);
                 case 1:
-                    return new State("InProgress", "There is an operation in the background.", 1);
+                    return new State("Idle", "The software is un-initialized.", 1);
                 case 2:
-                    return new State("Idle", "The software is ready for working.", 2);
+                    return new State("InProgress", "There is an operation in the background.", 2);
                 default:
                     return new State("Ready", "The software is ready for working.", 3);
             }

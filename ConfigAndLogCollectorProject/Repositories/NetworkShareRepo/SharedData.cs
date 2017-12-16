@@ -6,53 +6,53 @@ using System;
 namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
 {
 
-    public class SharedData : NotificationBase, ISharedData
-    {
-        public string Name { get; }
-        public string NetName { get; }
+    //public class SharedData : NotificationBase, ISharedData
+    //{
+    //    public string Name { get; }
+    //    public string NetName { get; }
 
-        private readonly IList<SharedFile> _fileList;
-
-
-        public SharedData(string name, string serverName, bool isSelected)
-        {
-            Name = name;
-            NetName = serverName;
-            IsSelected = isSelected;
-            _fileList = new List<SharedFile>();
-        }
+    //    private readonly IList<SharedFile> _fileList;
 
 
-        private bool _isSelected;
-        public bool IsSelected
-        {
-            get
-            {
-                return _isSelected;
-            }
-            set
-            {
-                _isSelected = value;
-                OnPropertyChanged();
-            }
-        }
+    //    public SharedData(string name, string serverName, bool isSelected)
+    //    {
+    //        Name = name;
+    //        NetName = serverName;
+    //        IsSelected = isSelected;
+    //        _fileList = new List<SharedFile>();
+    //    }
 
 
-        IList<SharedFile> ISharedData.FileList => _fileList;
+    //    private bool _isSelected;
+    //    public bool IsSelected
+    //    {
+    //        get
+    //        {
+    //            return _isSelected;
+    //        }
+    //        set
+    //        {
+    //            _isSelected = value;
+    //            OnPropertyChanged();
+    //        }
+    //    }
 
 
-        public SharedFile this[int i]
-        {
-            get { return _fileList[i]; }
-            set { _fileList[i] = value; }
-        }
+    //    IList<SharedFile> ISharedData.FileList => _fileList;
 
 
-        public void Add(SharedFile shf)
-        {
-            _fileList.Add(shf);
-        }
+    //    public SharedFile this[int i]
+    //    {
+    //        get { return _fileList[i]; }
+    //        set { _fileList[i] = value; }
+    //    }
 
-    }
+
+    //    public void Add(SharedFile shf)
+    //    {
+    //        _fileList.Add(shf);
+    //    }
+
+    //}
 
 }

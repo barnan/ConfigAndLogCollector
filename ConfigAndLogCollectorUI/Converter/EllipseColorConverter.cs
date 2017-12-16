@@ -10,26 +10,31 @@ namespace ConfigAndLogCollectorUI.Converter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            try
-            {
-                State state = (State)Enum.Parse(typeof(State), value.ToString());
+            State state = value as State;
 
-                switch (state)
-                {
-                    case State.Error:
-                        return new SolidColorBrush(Colors.Red);
-                    case State.InProgress:
-                        return new SolidColorBrush(Colors.Yellow);
-                    case State.Idle:
-                        return new SolidColorBrush(Colors.Green);
-                    default:
-                        return new SolidColorBrush(Colors.Gray);
-                }
-            }
-            catch (Exception)
+            if (state == null)
             {
                 return Binding.DoNothing;
             }
+
+            if (state == State.Error)
+            {
+                return new SolidColorBrush(Colors.Red);
+            }
+            if (state == State.Idle)
+            {
+                return new SolidColorBrush(Colors.Orange);
+            }
+            if (state == State.InProgress)
+            {
+                return new SolidColorBrush(Colors.Yellow);
+            }
+            if (state == State.Ready)
+            {
+                return new SolidColorBrush(Colors.Yellow);
+            }
+
+            return new SolidColorBrush(Colors.Gray);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
