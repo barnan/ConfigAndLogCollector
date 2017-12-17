@@ -88,7 +88,10 @@ namespace ConfigAndLogCollectorUI
 
         public IList<SharedFile> FileList
         {
-            get { return _collector.SharedFileList; }
+            get
+            {
+                return _collector.SharedFileList;
+            }
         }
 
 

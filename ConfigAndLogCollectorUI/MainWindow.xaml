@@ -115,11 +115,19 @@
 
 
             <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
-
-            <Button Grid.Column="1" Grid.Row="3" x:Name="GetDataButton" 
-                    Content="GetData" Width="75" 
+            <StackPanel Grid.Column="1" Grid.Row="3">
+                
+                <Button  x:Name="GetDataButton" 
+                    Content="GetData" Width="120" Height="40" Style="{StaticResource CommonStyle}" 
                     HorizontalAlignment="Center"  VerticalAlignment="Center" Click="GetDataButton_Click" />
+                
+                <Button  x:Name="RefreshButton" 
+                    Content="Refresh" Width="120" Height="40" Style="{StaticResource CommonStyle}"
+                    HorizontalAlignment="Center"  VerticalAlignment="Center" />
 
+            </StackPanel>
+            
+            
 
             <!-- XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -->
             <!-- available shares (result of network mapping) -->
