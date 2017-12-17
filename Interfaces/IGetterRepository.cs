@@ -11,7 +11,7 @@ namespace Interfaces
     {
         IList<T> GetAll();
 
-        T Get(int id);
+        T Get(int id);               
 
     }
 }

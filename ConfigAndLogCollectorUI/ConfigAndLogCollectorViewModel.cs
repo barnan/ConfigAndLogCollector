@@ -10,11 +10,12 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ConfigAndLogCollectorUI
 {
 
-    public class ConfigAndLogCollectorViewModel : NotificationBase, IInitializable, INotifyPropertyChanged
+    public class ConfigAndLogCollectorViewModel : NotificationBase, INotifyPropertyChanged
     {
         private readonly ICollector _collector;
         private readonly string _assemblyPath;
@@ -88,7 +89,15 @@ namespace ConfigAndLogCollectorUI
 
         public IList<SharedFile> FileList
         {
-            get { return _collector.SharedFileList; }
+            get
+            {
+                if (CollectorState != State.Ready)
+                {
+                    return new List<SharedFile>();
+                }
+
+                return _collector.SharedFileList;
+            }
         }
 
 
@@ -100,6 +109,11 @@ namespace ConfigAndLogCollectorUI
 
         private void SubscribeToShareListNotification()
         {
+            if (CollectorState != State.Ready)
+            {
+                return;
+            }
+
             foreach (IShare shl in ShareList)
             {
                 if (shl == null)
@@ -220,10 +234,18 @@ namespace ConfigAndLogCollectorUI
 
         #region IInitalized
 
+        public async Task<bool> AsyncInit()
+        {
+            return await Init();
+        }
+
+
         public bool IsInitialized { get; private set; }
 
         public bool Init()
         {
+
+
             try
             {
                 Monitor.Enter(_ownLock);
@@ -231,7 +253,7 @@ namespace ConfigAndLogCollectorUI
                 _collector.Error += ErrorMessageHandler;
                 _collector.Info += InfoMessageHandler;
 
-                _collector.Init();
+                _collector.AsyncInit();
 
                 _logger?.InfoLog("Initialized.", CLASS_NAME);
 
@@ -275,6 +297,15 @@ namespace ConfigAndLogCollectorUI
                 IsInitialized = false;
                 Monitor.Exit(_ownLock);
             }
+        }
+
+        #endregion
+
+        #region Threading
+
+        private async void InitCollector()
+        {
+
         }
 
         #endregion

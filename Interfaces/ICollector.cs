@@ -9,7 +9,7 @@ namespace Interfaces
     public delegate void CollectorMessageEventHandler(object sender, string message);
 
 
-    public interface ICollector : IInitializable
+    public interface ICollector : IAsyncInitializable
     {
         event CollectorMessageEventHandler Info;
         event CollectorMessageEventHandler Error;

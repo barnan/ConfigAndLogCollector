@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ConfigAndLogCollectorUI
 {
@@ -44,6 +45,8 @@ namespace ConfigAndLogCollectorUI
                 //
             }
 
+            State = State.Idle;
+
             _archiveOptionRepository = aOption;
             _shareRepository = shareDat;
         }
@@ -53,75 +56,91 @@ namespace ConfigAndLogCollectorUI
 
         public bool Init()
         {
-            lock (_ownLock)
-            {
-                try
-                {
-                    bool initrepo1 = _archiveOptionRepository?.Init() ?? false;
-                    if (!initrepo1)
-                    {
-                        IsInitialized = false;
-                        State = State.Error;
-
-                        string message = Logger?.ErrorLog("Archive option repository could not be initialized.", CLASS_NAME);
-                        OnError(this, message);
-
-                    }
-                    else
-                    {
-                        _archiveOptionList = _archiveOptionRepository.GetAll();
-
-                        IsInitialized = true;
-                        State = State.Ready;
-
-                        string message = Logger?.InfoLog($"Archive option repository initialized. Number of Options: {_archiveOptionList?.Count}", CLASS_NAME);
-                        OnInfo(this, message);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    IsInitialized = false;
-                    State = State.Error;
-
-                    string message = Logger?.ErrorLog($"Exception occured: {ex.Message}", CLASS_NAME);
-                    OnError(this, message);
-                }
-
-                try
-                {
-                    bool initrepo2 = _shareRepository?.Init() ?? false;
-                    if (!initrepo2)
-                    {
-                        IsInitialized = false;
-                        State = State.Error;
-
-                        string message = Logger?.ErrorLog("Share repository could not be initialized.", CLASS_NAME);
-                        OnError(this, message);
-
-                    }
-                    else
-                    {
-                        _shareList = _shareRepository.GetAll();
-
-                        IsInitialized &= true;
-                        State &= State.Idle;
-
-                        string message = Logger?.InfoLog($"Share repository initialized. Number of shares: {_shareList?.Count}", CLASS_NAME);
-                        OnInfo(this, message);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    IsInitialized = false;
-                    State = State.Error;
-
-                    string message = Logger?.ErrorLog($"Exception occured: {ex.Message}", CLASS_NAME);
-                    OnError(this, message);
-                }
-
-                return IsInitialized;
-            }
+            return true;
         }
+
+
+        public async Task<bool> AsyncInit()
+        {
+            //lock (_ownLock)
+            //{
+            try
+            {
+                bool initrepo1 = _archiveOptionRepository?.Init() ?? false;
+                if (!initrepo1)
+                {
+                    IsInitialized = false;
+                    State = State.Error;
+
+                    string message = Logger?.ErrorLog("Archive option repository could not be initialized.", CLASS_NAME);
+                    OnError(this, message);
+
+                }
+                else
+                {
+                    _archiveOptionList = _archiveOptionRepository.GetAll();
+
+                    IsInitialized = true;
+                    State = State.Ready;
+
+                    string message = Logger?.InfoLog($"Archive option repository initialized. Number of Options: {_archiveOptionList?.Count}", CLASS_NAME);
+                    OnInfo(this, message);
+                }
+            }
+            catch (Exception ex)
+            {
+                IsInitialized = false;
+                State = State.Error;
+
+                string message = Logger?.ErrorLog($"Exception occured: {ex.Message}", CLASS_NAME);
+                OnError(this, message);
+            }
+
+            try
+            {
+                var resu = await AsyncShareInit();
+                bool initrepo2 = true;
+                if (!initrepo2)
+                {
+                    IsInitialized = false;
+                    State = State.Error;
+
+                    string message = Logger?.ErrorLog("Share repository could not be initialized.", CLASS_NAME);
+                    OnError(this, message);
+
+                }
+                else
+                {
+                    //_shareList = _shareRepository.GetAll();
+
+                    IsInitialized &= true;
+                    State &= State.Idle;
+
+                    string message = Logger?.InfoLog($"Share repository initialized. Number of shares: {_shareList?.Count}", CLASS_NAME);
+                    OnInfo(this, message);
+                }
+            }
+            catch (Exception ex)
+            {
+                IsInitialized = false;
+                State = State.Error;
+
+                string message = Logger?.ErrorLog($"Exception occured: {ex.Message}", CLASS_NAME);
+                OnError(this, message);
+            }
+
+            return IsInitialized;
+            //}
+        }
+
+
+        private async Task<bool> AsyncShareInit()
+        {
+            var ret = await (_shareRepository as IAsyncInitializable)?.AsyncInit();
+
+            return true;
+        }
+
 
 
         public void Close()
@@ -177,7 +196,6 @@ namespace ConfigAndLogCollectorUI
         {
             get
             {
-                _archiveOptionList = _archiveOptionRepository.GetAll();
                 return _archiveOptionList;
             }
             set
@@ -192,10 +210,11 @@ namespace ConfigAndLogCollectorUI
         {
             get
             {
-                _shareList = _shareRepository.GetAll();
                 return _shareList;
             }
         }
+
+
 
         public IList<SharedFile> SharedFileList
         {

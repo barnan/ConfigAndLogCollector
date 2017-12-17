@@ -53,6 +53,30 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
             }
         }
 
+
+        public override IList<ArchiveOption> GetAll()
+        {
+            lock (_ownLock)
+            {
+                IList<ArchiveOption> archOp = new List<ArchiveOption>();
+
+                if (!IsInitialized)
+                {
+                    Logger?.InfoLog("Not initialized.", CLASS_NAME);
+                    return archOp;
+                }
+
+                if (!ReadXmlFile())
+                {
+                    Logger?.InfoLog("Initialization failed, the xml file could not be readed.", CLASS_NAME);
+                    return archOp;
+                }
+
+                Logger?.InfoLog("Initialized.", CLASS_NAME);
+                return archOp;
+            }
+        }
+
         #endregion
 
 
@@ -70,28 +94,10 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
                     return IsInitialized;
                 }
 
-                if (!CheckFilePath())
+                if (!ReadXmlFile())
                 {
-                    Logger?.InfoLog("The given xml file does not exists.", CLASS_NAME);
-
-                    ArchiveOptions = new ArchiveConfigs(new List<ArchiveOption> { new ArchiveOption("AllConfig", new List<ArchPath> { new ArchPath("*.config", true, 10) }) });
-
-                    ArchiveOptions.Serialize(FilePath);
-
-                    return IsInitialized = true;
-                }
-                else
-                {
-                    if (!CheckFileAcessibility())
-                    {
-                        IsInitialized = false;
-                        throw new Exception(Logger?.InfoLog("The given xml can not be opened.", CLASS_NAME));
-                    }
-
-                    lock (_fileLock)
-                    {
-                        ArchiveOptions = ArchiveConfigs.ReadFromFile(FilePath);
-                    }
+                    Logger?.InfoLog("Initialization failed, the xml file could not be readed.", CLASS_NAME);
+                    return IsInitialized = false;
                 }
 
                 Logger?.InfoLog("Initialized.", CLASS_NAME);
@@ -110,9 +116,40 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
         }
 
 
+        private bool ReadXmlFile()
+        {
+            if (!CheckFilePath())
+            {
+                Logger?.InfoLog("The given xml file does not exists.", CLASS_NAME);
+
+                ArchiveOptions = new ArchiveConfigs(new List<ArchiveOption> { new ArchiveOption("AllConfig", new List<ArchPath> { new ArchPath("*.config", true, 10) }) });
+
+                ArchiveOptions.Serialize(FilePath);
+
+                return true;
+            }
+            else
+            {
+                lock (_fileLock)
+                {
+                    if (!CheckFileAcessibility())
+                    {
+                        throw new Exception(Logger?.InfoLog("The given xml can not be opened.", CLASS_NAME));
+                    }
+
+                    ArchiveOptions = ArchiveConfigs.ReadFromFile(FilePath);
+                }
+                return true;
+            }
+        }
+
+
+
+
+
         public override void Close()
         {
-            throw new NotImplementedException();
+            Logger?.InfoLog("Closed.", CLASS_NAME);
         }
 
 
@@ -131,24 +168,21 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
 
         private bool CheckFileAcessibility()
         {
-            lock (_fileLock)
+            try
             {
-                try
+                using (Stream stream = new FileStream(FilePath, FileMode.Open))
                 {
-                    using (Stream stream = new FileStream(FilePath, FileMode.Open))
-                    {
-                        return true;
-                    }
+                    return true;
                 }
-                catch (AccessViolationException ex)
-                {
-                    string message = Logger?.InfoLog($"File {FilePath} is not accessible.", CLASS_NAME);
-                    throw new Exception(message, ex);
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
+            }
+            catch (AccessViolationException ex)
+            {
+                string message = Logger?.InfoLog($"File {FilePath} is not accessible.", CLASS_NAME);
+                throw new Exception(message, ex);
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 

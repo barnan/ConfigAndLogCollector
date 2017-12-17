@@ -3,6 +3,7 @@ using Interfaces;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
 {
@@ -18,6 +19,7 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
 
 
         #region IRepository
+
 
         public bool Delete(ArchiveOption element)
         {
@@ -55,7 +57,7 @@ namespace ConfigAndLogCollectorProject.Repositories.ConfigRepo
         }
 
 
-        public IList<ArchiveOption> GetAll()
+        public virtual IList<ArchiveOption> GetAll()
         {
             lock (_ownLock)
             {

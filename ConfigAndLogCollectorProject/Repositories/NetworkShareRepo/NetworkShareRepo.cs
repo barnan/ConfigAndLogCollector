@@ -4,16 +4,17 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
 {
 
-    public class NetworkShareRepo : IGetterRepository<IShare>, IInitializable
+    public class NetworkShareRepo : IGetterRepository<IShare>, IInitializable, IAsyncInitializable
     {
 
         private readonly object _ownLock = new object();
         private const string CLASS_NAME = nameof(NetworkShareRepo);
-        private NetworkCommunicator _nc;
+        private readonly NetworkCommunicator _nc;
         private IList<IShare> ShareList { get; set; }
         private List<string> ToolNameList { get; }
         public bool IsInitialized { get; set; }
@@ -68,7 +69,7 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
                     throw new Exception(message);
                 }
 
-                return ShareList;
+                return ShareList = _nc.GetShareList(ToolNameList);
             }
         }
 
@@ -88,8 +89,6 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
                     return IsInitialized;
                 }
 
-
-
                 if ((ToolNameList?.Count ?? 0) == 0)
                 {
                     IsInitialized = false;
@@ -98,6 +97,7 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
                 }
 
                 ShareList = _nc.GetShareList(ToolNameList);
+
 
                 if (ShareList == null)
                 {
@@ -112,6 +112,13 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
             }
 
         }
+
+        public async Task<bool> AsyncInit()
+        {
+            return await Task.Run(() => Init());
+
+        }
+
 
         public void Close()
         {
