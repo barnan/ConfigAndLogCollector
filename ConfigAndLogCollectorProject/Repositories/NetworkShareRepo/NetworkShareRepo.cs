@@ -13,7 +13,7 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
 
         private readonly object _ownLock = new object();
         private const string CLASS_NAME = nameof(NetworkShareRepo);
-        private readonly NetworkCommunicator _nc;
+        private NetworkCommunicator _nc;
         private IList<IShare> ShareList { get; set; }
         private List<string> ToolNameList { get; }
         public bool IsInitialized { get; set; }
@@ -87,6 +87,8 @@ namespace ConfigAndLogCollectorProject.Repositories.NetworkShareRepo
                     Logger?.InfoLog("Already initialized.", CLASS_NAME);
                     return IsInitialized;
                 }
+
+
 
                 if ((ToolNameList?.Count ?? 0) == 0)
                 {

@@ -1,5 +1,4 @@
 ﻿using BaseClasses;
-using ConfigAndLogCollectorProject.Repositories.NetworkShareRepo;
 using Interfaces;
 using NLog;
 using System;
